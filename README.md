@@ -1,134 +1,374 @@
 # Perfect Vibe Coding (PVC)
 
-Cursor Agent guidance for **safe, consistent, reusable** web/app building—tuned for vibe coding (including non-expert builders).
+**말로 웹·앱을 만드는 사람을 위한 Cursor 작업 운영 체제**
 
-**Upgrade model (2026-07):** thin always-on English rules + path `globs` + agent-requested protocols + situational skills. Korean text is **human rationale only** under `docs/pvc-guide/ko/` (not auto-loaded).
+코딩을 전공하지 않아도, Cursor Agent에게 “이런 화면·기능을 만들어 줘”라고 말하며 제품을 만들 수 있습니다.  
+다만 AI만 믿으면 **파일 구조가 들쭉날쭉해지고, 중요한 데이터가 지워지고, 화면마다 디자인이 달라지고, 비용(토큰)만 커지는** 일이 자주 생깁니다.
 
----
+PVC는 그 실패를 줄이기 위해, Cursor가 따를 **안전장치·품질 기준·작업 순서·외부 자료 사용법**을 미리 정리해 둔 템플릿입니다.
 
-## Why PVC
-
-| Problem | Without PVC |
-|---------|-------------|
-| Criteria drift | Inconsistent structure/naming/style |
-| Unsafe edits | Data loss, broken APIs |
-| Missing ops docs | Nobody knows what code does |
-| Design chaos | Per-page one-off styles |
-| Skill spam | Duplicate rules, license risk, token burn |
-
-PVC is an **operating system for vibe coding**: always keep a small safety core; load the rest only when the file or task needs it.
+> 한 줄 요약:  
+> **빠른 바이브 코딩**은 유지하고, **실무에서 버틸 수 있는 안전·일관성·문서**를 기본값으로 만듭니다.
 
 ---
 
-## Language policy (fixed)
+## 이 문서는 누구를 위한 것인가
 
-| Asset | Language | Auto-load |
-|-------|----------|-----------|
-| `.cursor/rules/*.mdc` | **English** | always / globs / agent |
-| `.cursor/skills/**` | **English** | on trigger |
-| `docs/pvc-guide/ko/**` | **Korean** | **No** (human / ask) |
-| `docs/references/**` | EN (+ notes) | No |
+| 대상 | 이런 분께 맞습니다 |
+|------|-------------------|
+| 비개발자·비전문가 | 아이디어는 있는데 코드를 직접 쓰기 어려운 분 |
+| 혼자 만드는 창업자·기획자 | Cursor로 MVP·내부 도구·랜딩을 빠르게 만들고 싶은 분 |
+| 소규모 팀 | “AI마다 기준이 달라서” 결과물이 흔들리는 팀 |
+| 개발자 | 거버넌스·보안·디자인 기준을 저장소에 고정하고 싶은 분 |
 
-Conflict order: **security/data > core + project-context > glob rules > skills > external refs > Korean guides**.
-
----
-
-## Token budget (operating limits)
-
-| Tier | Target |
-|------|--------|
-| Always-on files | **2** (`core/00`, `project-context`) |
-| Always-on total | **~120–180 lines** |
-| Each glob rule | **~20–60 lines** |
-| Agent / manual | Longer OK; checklist-first |
-| Examples & long forms | In `docs/`, not always-on rules |
-
-Do **not** set most rules to `alwaysApply: true`. Prefer `globs` or agent-requested descriptions.
+**필수가 아닌 것:** 컴퓨터공학 학위, 프레임워크 전문가 수준.  
+**있으면 좋은 것:** Cursor 설치, GitHub 계정, “무엇을 만들고 싶은지”를 문장으로 말할 수 있는 능력.
 
 ---
 
-## Rule application tiers
+## 바이브 코딩이란?
 
-```text
-Always (every chat)
-  └─ core/00-development-governance.mdc
-  └─ project/project-context.mdc
+**바이브 코딩**은 세부 문법보다 **원하는 결과(화면, 흐름, 문구)**를 말로 설명하고, AI가 코드를 쓰게 하는 방식입니다.
 
-Globs (when matching files are in play)
-  └─ architecture/ security/ design/ devops/ runtime/ patterns/ docs/*
+장점: 시작이 빠르다.  
+단점: 기준이 없으면 AI가 매 채팅마다 다른 방식으로 만들어, 나중에는 고치기 어렵고 비용도 커진다.
 
-Agent requested (model picks by description)
-  └─ core/01, 02, 03, 04 · docs/reference-catalog
-
-Manual (high risk / on demand)
-  └─ manual/migration · incident-response · full-audit
-```
-
-| Task | What loads |
-|------|------------|
-| Button label tweak | Always only |
-| New component | Always + design globs |
-| API endpoint | Always + API/data + validation globs |
-| New library | Dependency glob + approval |
-| DB migration | `manual/migration` |
-| “Which skill?” | `.cursor/skills/skill-router` |
+PVC는 “감으로만 코딩”이 아니라 **감으로 시작하되, 정해진 레일로 달리게** 합니다.
 
 ---
 
-## Layout
+## PVC가 막아 주는 대표적인 문제
+
+| 문제 | 실제로 생기는 일 | PVC의 대응 |
+|------|------------------|------------|
+| 기준이 매번 바뀜 | 폴더·이름·스타일이 제각각 | 고정 규칙 + 프로젝트 사실 카드 |
+| 위험한 수정 | 데이터 삭제, 로그인 방식 무단 변경 | 승인 없는 위험 작업 금지 |
+| 문서 없음 | “이 폴더가 뭐 하는 곳인지” 모름 | CODEMAP 등 운영 문서 습관 |
+| 디자인 분열 | 페이지마다 다른 버튼·색 | 디자인 시스템·토큰 우선 |
+| 스킬 남용 | 유명 자료를 통째로 복사 | **원칙만** 골라 변환, 대량 설치 금지 |
+| 토큰 낭비 | 매 채팅에 수백 줄 규칙 전부 투입 | 상시 규칙은 얇게, 나머지는 필요할 때만 |
+
+---
+
+## 핵심 원칙 (꼭 기억할 것)
+
+1. **상시 규칙은 얇게** — 매 대화에 붙는 규칙은 최소한의 안전·프로젝트 사실만.  
+2. **상황 규칙은 정확하게** — UI를 고칠 때는 UI 규칙, API를 고칠 때는 API·보안 규칙.  
+3. **실행 규칙은 영어, 해설은 한글** — Agent가 따르는 파일은 EN, 사람이 읽는 자세한 설명은 한글 가이드.  
+4. **유명하다고 통째로 설치하지 않습니다** — 부족하거나, 더 나은 판단·코딩에 도움이 되는 **원칙만** 프로젝트에 맞게 변환합니다.  
+5. **한 주제는 한곳에만** — 같은 내용을 규칙·스킬·문서에 세 번 쓰지 않습니다.  
+6. **보안·데이터가 최우선** — 멋진 UI 스킬보다 비밀키·개인정보·데이터 안전이 앞섭니다.
+
+---
+
+## 저장소 한눈에 보기
 
 ```text
 perfect-vibe-coding/
-├── README.md
-├── RULES_MAP.md
-├── docs/
-│   ├── pvc/DECISIONS.md
-│   ├── pvc-guide/ko/          # Korean rationales (human)
-│   ├── templates/
-│   └── references/
-├── .cursor/rules/             # English executable rules
-│   ├── core/ project/ architecture/ security/ …
-│   └── manual/
-└── .cursor/skills/            # English skills
-    ├── skill-router/
-    └── external-skill-import/
+│
+├── README.md                 ← 지금 읽는 한글 교과서·설치 설명서 (사람용)
+├── RULES_MAP.md              ← 규칙 파일 지도 (어떤 규칙이 언제 켜지는지)
+│
+├── .cursor/
+│   ├── rules/                ← Agent가 따르는 실행 규정 (영어)
+│   │   ├── core/             ← 헌법, 안전 절차, 스킬 도입 게이트 …
+│   │   ├── project/          ← 이 프로젝트만의 사실 (제품·스택·금지)
+│   │   ├── architecture/     ← 코드 구조·데이터·테스트
+│   │   ├── security/         ← 로그인·검증·비밀값
+│   │   ├── design/           ← 디자인·접근성·타이포
+│   │   ├── devops/ runtime/ patterns/ docs/
+│   │   └── manual/           ← 마이그레이션·장애·전체 감사 (위험할 때만)
+│   │
+│   └── skills/               ← 상황별 작업 절차 (영어)
+│       ├── skill-router/     ← “이번 작업에 뭘 쓸까?” 안내
+│       └── external-skill-import/  ← 외부 스킬을 안전하게 가져오는 절차
+│
+└── docs/
+    ├── pvc-guide/ko/         ← 한글 상세 해설 (자동으로 Agent에 안 붙음)
+    ├── pvc/DECISIONS.md      ← 중요한 운영 결정 기록
+    ├── templates/            ← 큰 기능용 브리프·블루프린트 양식
+    └── references/           ← 출처·고스타 카탈로그·허용 참고 목록
+```
+
+### 언어 정책 (중요)
+
+| 종류 | 언어 | Agent가 매 채팅에 자동으로 읽나? |
+|------|------|----------------------------------|
+| `.cursor/rules/` 실행 규정 | 영어 | 상시 2개만 항상 / 나머지는 파일·작업에 맞을 때 |
+| `.cursor/skills/` 스킬 | 영어 | 해당 작업일 때만 |
+| `docs/pvc-guide/ko/` 해설 | **한글** | **아니요** (사람이 읽거나, “한글로 설명해” 할 때) |
+| 이 README | **한글** | 아니요 (설치·이해용) |
+
+충돌이 나면 우선순위는 항상 다음과 같습니다.
+
+1. 보안 · 비밀값 · 데이터 안전  
+2. 핵심 헌법 + 프로젝트 사실  
+3. 지금 연 파일에 맞는 규칙  
+4. 스킬 절차  
+5. 외부 참고 자료  
+6. 한글 해설 문서  
+
+---
+
+## 규칙이 “켜지는” 방식 (비유로 이해하기)
+
+PVC 규칙을 전부 스위치 세 종류라고 생각하세요.
+
+### 1) 항상 켜짐 (Always) — 단 2개
+
+- `core/00-development-governance.mdc` — “최소로 고치고, 위험한 짓은 승인 받기”  
+- `project/project-context.mdc` — “우리 제품은 뭐고, 기술은 뭐 쓰는지”
+
+작은 문구 수정에도 이 두 개는 같이 갑니다. **그래서 짧게 유지합니다.**
+
+### 2) 파일 열리면 켜짐 (Globs)
+
+예: 컴포넌트 파일을 고치면 디자인·접근성 규칙이, API 파일을 고치면 데이터·검증 규칙이 붙습니다.  
+“버튼 글자만 바꾸는데 데이터베이스 규칙까지” 붙지 않게 하려는 장치입니다.
+
+### 3) Agent가 상황에 맞게 고름 (Agent / Skill / Manual)
+
+- 큰 기능, 외부 스킬 도입, 긴 작업 → `skill-router`, 안전 프로토콜 등  
+- DB 구조 변경, 장애 대응 → `manual/`  
+
+---
+
+## 설치 설명서 (처음부터 끝까지)
+
+아래는 **새 웹/앱 프로젝트를 PVC 기준으로 시작하는** 표준 순서입니다.
+
+### 준비물
+
+1. [Cursor](https://cursor.com/) 설치  
+2. Git / GitHub (코드를 저장할 곳)  
+3. (선택) Node.js 등 — 쓸 기술은 나중에 `project-context`에 적습니다  
+
+### 1단계 — PVC 가져오기
+
+다음 중 편한 방법을 고르세요.
+
+**방법 A. 이 저장소를 템플릿으로 복사**
+
+1. GitHub에서 `perfect-vibe-coding`을 내 계정으로 fork 하거나, 새 저장소에 파일을 복사합니다.  
+2. 내 제품 이름으로 폴더/저장소를 바꿉니다.
+
+**방법 B. 이미 있는 앱 저장소에 PVC만 붙이기**
+
+1. 이 저장소의 `.cursor/rules/` 와 `.cursor/skills/` 폴더를 **내 앱 프로젝트 루트**에 복사합니다.  
+2. 필요하면 `docs/templates/`, `docs/references/`, `docs/pvc-guide/ko/` 도 함께 복사합니다.  
+3. 이 README는 팀에 공유할 문서로 두거나, 앱 README에 “PVC를 따른다”고 한 줄 링크해도 됩니다.
+
+### 2단계 — Cursor로 프로젝트 열기
+
+1. Cursor → Open Folder → 내 프로젝트 폴더 선택  
+2. Settings / Rules에서 프로젝트 규칙이 보이는지 확인  
+3. Agent 채팅을 엽니다  
+
+### 3단계 — 프로젝트 사실 카드 채우기 (가장 중요)
+
+파일: `.cursor/rules/project/project-context.mdc`
+
+여기는 **시험 문제 전부가 아니라, Agent가 매 작업에 쓸 사실만** 적는 곳입니다.
+
+최소한 아래를 채우세요.
+
+| 항목 | 예시 (그대로 쓰지 말고 내 것으로) |
+|------|-----------------------------------|
+| 제품 한 줄 | “동네 카페 예약 웹앱” |
+| 누가 쓰나 | “사장님 + 손님, 모바일 많음” |
+| 기술 스택 | “Next.js, TypeScript, …” (쓰는 것만) |
+| 하면 안 되는 것 | “운영 DB에 직접 쓰기 금지” 등 |
+| 완료 전 검사 | “lint, test, build 명령” |
+
+비워 두면 Agent가 **추측**합니다. 추측이 쌓이면 프로젝트가 흔들립니다.
+
+### 4단계 — 최소 문서 뼈대 만들기
+
+처음에는 짧아도 됩니다. Agent에게 이렇게 말해도 됩니다.
+
+```text
+이 프로젝트는 PVC(.cursor/rules)를 따른다.
+project-context를 확인하고, CODEMAP.md 초안을 제안해 줘.
+구현은 내가 승인한 뒤에만 최소 범위로 진행해.
+```
+
+권장 파일:
+
+| 파일 | 역할 |
+|------|------|
+| `CODEMAP.md` | 폴더·화면·연동이 뭔지 지도 |
+| `DESIGN.md` | 색·글자·컴포넌트 기준 (UI가 있으면) |
+| `README.md` | 내 제품 소개·실행 방법 |
+| `CHANGELOG.md` | 사용자/운영 관점 변경 기록 |
+
+### 5단계 — 작은 요청으로 시험
+
+바로 큰 기능보다, 한 가지로 시험하세요.
+
+```text
+CODEMAP에 적힌 홈 화면 제목 문구만 “환영합니다”로 바꿔 줘.
+위험한 변경이면 먼저 물어봐.
+```
+
+기대한 동작:
+
+- 사전 보고가 과하지 않게, 범위가 작은지 확인  
+- 파일 조금만 수정  
+- “테스트했다”고 거짓말하지 않음 (실제로 돌린 것만 보고)
+
+### 6단계 — 본격 기능은 순서대로
+
+권장 루프:
+
+```text
+말로 요청 → (큰 일이면) 계획 확인 → 최소 수정 → 확인(화면/명령) → 문서 갱신
+```
+
+큰 기능이면 Agent에게:
+
+```text
+skill-router 기준으로 이번 작업에 필요한 규칙·스킬만 골라 줘.
+승인 전에 코드를 대량으로 바꾸지 마.
 ```
 
 ---
 
-## Quick start
+## 일상에서 Agent에게 말하는 법
 
-1. Copy `.cursor/rules/` and `.cursor/skills/` into your app repo (or clone PVC as a template).
-2. Fill **`project/project-context.mdc`** with real product/stack/forbidden/checks (keep it short).
-3. Add `CODEMAP.md` (and `DESIGN.md` if UI).
-4. In Cursor, start with a small ask; for larger work say: use `skill-router`.
-5. Import external skills only via `external-skill-import` + catalog—never wholesale marketplace installs.
+### 좋은 요청 예시
 
----
+- “로그인 없이 보이는 랜딩 히어로에 제품명과 CTA 버튼 하나.”  
+- “예약 목록 API는 서버에서만 DB를 보게 하고, 화면에서는 서비스 함수만 호출.”  
+- “버튼 색만 브랜드 토큰에 맞게. 다른 페이지는 건드리지 마.”  
 
-## Skills & references
+### 피하면 좋은 요청
 
-- **Router:** `.cursor/skills/skill-router/SKILL.md` — pick rules/skills by task type  
-- **Import gate:** `.cursor/skills/external-skill-import/SKILL.md`  
-- **Catalog:** [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md)  
-- **Standards:** [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)  
-- **Korean guide:** [`docs/pvc-guide/ko/README.md`](./docs/pvc-guide/ko/README.md)
+- “전체적으로 예쁘게 리팩터해 줘.” (범위가 무한)  
+- “유명한 스킬 전부 설치해.” (충돌·비용·라이선스)  
+- “일단 운영 DB에 연결해서 테스트해.” (위험)
 
-Allowed reference *roles* (principles only): Meng To, VoltAgent DESIGN.md structure, Emil Kowalski, make-interfaces-feel-better, agency-agents viewpoints, KRDS (cite), mattpocock/skills (router patterns), obra/superpowers (plan gates), ECC (context hygiene), etc. See catalog for triggers and reject reasons.
+### 위험할 때 Agent가 멈춰야 하는 순간
 
----
+- 데이터 삭제·대량 수정·DB 구조 변경  
+- 로그인/결제/개인정보 관련 변경  
+- 새 라이브러리 대량 추가  
+- 폴더 전체 이동  
 
-## Priority on conflict
-
-1. Security · secrets · data integrity  
-2. Safe-work · change control · devops  
-3. project-context · runtime · architecture  
-4. Design / UI  
-5. patterns · task skills  
-6. External refs (after governance gate)
+이때는 **승인**이 필요합니다. 귀찮아도 이게 PVC의 안전벨트입니다.
 
 ---
 
-## License / contributing
+## 외부 고급 참고 자료 — 어떻게 쓰나
 
-Treat this repo as a governance template: keep always-on thin, add globs/skills for detail, put Korean explanations only under `docs/pvc-guide/ko/`, and record decisions in `docs/pvc/DECISIONS.md`.
+아래 자료들은 **매우 우수한 고급 자료**입니다.  
+PVC는 이들을 “추천 목록”으로 두고, **필요할 때만 원칙을 골라 변환**합니다.
+
+### 공통 규칙 (반드시)
+
+- **유명하다고 통째로 설치하지 않습니다.**  
+- **부족하거나, 더 뛰어난 판단·코딩을 위해 필요·적용 가능한 원칙만** 프로젝트에 맞게 변환합니다.  
+- 가져올 때는 `.cursor/skills/external-skill-import` 절차와 `core/03` 게이트를 따릅니다.  
+- 변환 결과는 보통 **영어 Skill**로 두고, always-on 규칙에 장문을 다시 붙여 넣지 않습니다.
+
+### 허용 참고 출처와 역할
+
+| 자료 | 링크 | 이런 때 참고 | PVC에 가져오는 방식 |
+|------|------|--------------|---------------------|
+| Meng To Skills | https://github.com/MengTo/Skills | UI·랜딩 절차형 스킬 구조 | `SKILL.md` 형태·절차만. 라이브러리 통째 복사 금지 |
+| VoltAgent DESIGN.md | https://github.com/VoltAgent/awesome-design-md | `DESIGN.md` 목차·구조 | 문서 **구조**만. 남의 브랜드 비주얼 복제 금지 |
+| Emil Kowalski Skills | https://github.com/emilkowalski/skills | 모션·인터랙션·UI 품질 | 폴리싱·모션 점검 원칙만. 장식 모션 남발 금지 |
+| make-interfaces-feel-better | https://github.com/jakubkrehel/make-interfaces-feel-better | 이미 만든 UI의 미세 품질 | 토큰·컴포넌트 안에서 다듬기. 전체 재디자인 금지 |
+| Agency Agents | https://github.com/msitarzewski/agency-agents | 기획/UX/QA 등 다중 검토 관점 | 체크리스트·관점만. 페르소나 팩 전역 설치 금지 |
+| KRDS UI/UX | https://github.com/KRDS-uiux/krds-uiux | 접근성·폼·오류·공공성·정보 구조 | 패턴 참고 + **출처 표기**. 라이선스·이용조건 확인 |
+| UI Skills | https://www.ui-skills.com/ | UI 스킬 탐색 | 후보 조사만. 원문·라이선스 확인 전 적용 금지 |
+
+상세 역할·금지·KRDS 표기 문구는 다음에 있습니다.
+
+- 카탈로그: [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md)  
+- 한글 원문 해설: [`docs/pvc-guide/ko/core/03-skill-and-reference-governance.md`](./docs/pvc-guide/ko/core/03-skill-and-reference-governance.md)  
+- Agent 라우팅: [`.cursor/skills/skill-router/SKILL.md`](./.cursor/skills/skill-router/SKILL.md)
+
+### 가져오기 말 예시
+
+```text
+랜딩 페이지 작업이야.
+MengTo/Skills의 절차형 SKILL 구조 원칙만 참고해서,
+우리 프로젝트용 영어 Skill 초안을 external-skill-import 절차로 제안해 줘.
+저장소 전체를 복사하지 마.
+```
+
+---
+
+## 작업 유형별 “무엇을 켜나” 빠른표
+
+| 하고 싶은 일 | 대략 켜지는 것 |
+|--------------|----------------|
+| 문구·색 아주 조금 | 상시 2개만 |
+| 화면·컴포넌트 | + design 규칙 |
+| 폼·입력 | + form / validation |
+| API·DB | + data-integrity / security |
+| 로그인 | + auth (+ 위험하면 안전 프로토콜) |
+| 새 라이브러리 | + dependency (+ 승인) |
+| 모션·폴리싱 | skill-router → Emil / make-interfaces 원칙 |
+| DESIGN.md 작성 | VoltAgent 구조 원칙 |
+| 공공·신뢰·접근성 | KRDS 원칙 + 출처 |
+| DB 구조 변경 | manual/migration + 명시 승인 |
+
+---
+
+## 토큰·비용 이야기 (왜 규칙을 얇게 했나)
+
+Cursor에 규칙을 많이 `alwaysApply`로 켜 두면, **채팅할 때마다** 그 글자가 비용으로 붙습니다.  
+PVC는 그래서:
+
+- 상시: **2개**, 대략 **120~180줄** 목표  
+- 나머지는 globs / 스킬 / 수동  
+- 한글 장문은 `docs/pvc-guide/ko/`에 두어 **자동 투입하지 않음**
+
+자세한 지도: [`RULES_MAP.md`](./RULES_MAP.md)  
+결정 기록: [`docs/pvc/DECISIONS.md`](./docs/pvc/DECISIONS.md)
+
+---
+
+## 자주 묻는 질문
+
+**Q. 영어로 된 규칙 파일을 내가 다 읽어야 하나요?**  
+A. 아니요. 이 README와 `docs/pvc-guide/ko/`가 사람용입니다. Agent는 영어 실행 규칙을 따릅니다.
+
+**Q. 기술 스택이 Next가 아니면요?**  
+A. 괜찮습니다. `project-context`만 실제 스택으로 바꾸면 됩니다. PVC는 특정 프레임워크를 강제하지 않습니다.
+
+**Q. 스킬을 잔뜩 설치하면 더 똑똑해지나요?**  
+A. 오히려 충돌·비용·라이선스 위험이 커질 수 있습니다. **필요한 원칙만** 가져오세요.
+
+**Q. 한글 해설과 영어 규칙이 다르면?**  
+A. **영어 실행 규칙이 우선**입니다. 해설은 이해를 돕는 용도입니다.
+
+**Q. 이미 만든 프로젝트에 나중에 PVC를 붙여도 되나요?**  
+A. 됩니다. `.cursor/rules`·`skills`를 복사한 뒤 `project-context`부터 채우세요. 한 번에 전부 리팩터하지 마세요.
+
+---
+
+## 더 읽어 보기
+
+| 문서 | 내용 |
+|------|------|
+| [`RULES_MAP.md`](./RULES_MAP.md) | 규칙 파일·티어 지도 |
+| [`docs/pvc-guide/ko/README.md`](./docs/pvc-guide/ko/README.md) | 한글 해설 목차 |
+| [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md) | 외부 자료 카탈로그·트리거 |
+| [`docs/references/SOURCES.md`](./docs/references/SOURCES.md) | OWASP·RFC 등 공인 출처 |
+| [`docs/templates/FEATURE_BRIEF.md`](./docs/templates/FEATURE_BRIEF.md) | 큰 기능 시작 전 브리프 |
+| [`docs/templates/IMPLEMENTATION_BLUEPRINT.md`](./docs/templates/IMPLEMENTATION_BLUEPRINT.md) | 구현 블루프린트 |
+
+---
+
+## 마치며
+
+PVC의 목표는 “완벽한 규칙 더미”가 아닙니다.
+
+> **지금 고치는 일과 위험도에 맞는 최소 규칙·스킬만 정확히 주고,  
+> 좋은 외부 자료는 원칙만 골라 쓰며,  
+> 비개발자도 말로 제품을 만들되 데이터가 안전하고 결과물이 일관되게 쌓이게 하는 것.**
+
+설치는 **복사 → project-context 작성 → 작은 시험 → 기능 추가** 순서만 지키면 충분합니다.  
+막히면 Agent에게 “PVC README의 설치 단계 기준으로 다음에 뭘 하면 되는지 한글로 안내해 줘”라고 물어보세요.

@@ -12,6 +12,26 @@ alwaysApply: false
 3. Record URL, license, date, purpose; no unapproved mass installs.
 4. Classify: apply now / park as proposal / reject.
 
+## Policy
+
+- Famous does **not** mean install everything.
+- Convert only missing or higher-quality **principles** to fit this project.
+- Prefer thin English skills over always-on rule bloat.
+
+## Curated UI/design sources (roles)
+
+| Source | Role |
+|--------|------|
+| MengTo/Skills | Procedural UI/landing skill structure |
+| VoltAgent/awesome-design-md | DESIGN.md document structure |
+| emilkowalski/skills | Motion, interaction, UI quality |
+| make-interfaces-feel-better | Micro UI polish |
+| agency-agents | Role-based review viewpoints |
+| KRDS UI/UX | KR public a11y / info architecture (cite) |
+| ui-skills.com | Discovery index only |
+
+Triggers and never-do: `docs/references/GITHUB_STAR_CATALOG.md` (Curated design/UI section).
+
 ## Before import
 
 1. Inventory `.cursor/rules/`, `.cursor/skills/`, `docs/`.

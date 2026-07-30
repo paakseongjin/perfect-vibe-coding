@@ -1,5 +1,19 @@
 # PVC Decisions Log
 
+## 2026-07-30 — Korean README textbook + curated UI sources
+
+### Decision
+
+- Main `README.md` is **Korean-only**, written as an install + vibe-coding textbook for non-experts.
+- Curated UI/design sources (MengTo, VoltAgent, emilkowalski, make-interfaces-feel-better, agency-agents, KRDS, ui-skills.com) are first-class in `GITHUB_STAR_CATALOG`, `skill-router`, and thin `core/03`, with explicit **no wholesale install / principles-only** policy.
+- Deep Korean role text remains in `docs/pvc-guide/ko/core/03-skill-and-reference-governance.md` §4.
+
+### Why
+
+- After the tier upgrade, the human-facing list disappeared from the short English README; users still need those premium references and a readable Korean guide.
+
+---
+
 ## 2026-07-30 — Context-cost upgrade (tiers + EN-only executable + KR guide)
 
 ### Decision

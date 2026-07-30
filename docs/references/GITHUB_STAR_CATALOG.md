@@ -64,10 +64,27 @@ PVC already encodes OWASP/NIST/RFC/Web Vitals. This file lists **additional comm
 |------|------:|---------|---------|------|
 | [tailwindlabs/tailwindcss](https://github.com/tailwindlabs/tailwindcss) | ~96k | MIT | Stack-dependent | Default example styling |
 | [shadcn-ui/ui](https://github.com/shadcn-ui/ui) | ~120k | MIT | Optional proposal | Copy components into repo; still obey `design/` tokens |
-| [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | ~105k | MIT | Already in `03` | DESIGN.md structure reference only — do not clone brand identity |
-| [KRDS-uiux/krds-uiux](https://github.com/KRDS-uiux/krds-uiux) | ~0.3k | check LICENSE | Already in `03` | KR public UX/a11y patterns; cite when used |
-| [MengTo/Skills](https://github.com/MengTo/Skills) | ~3.9k | MIT | Already in `03` | Procedural agent skills — selective |
-| [emilkowalski/skills](https://github.com/emilkowalski/skills) | ~23k | MIT | Already in `03` | Motion/UI polish skills — selective |
+| [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | ~105k | MIT | Adopt principles | DESIGN.md **structure** only — do not clone brand identity |
+| [KRDS-uiux/krds-uiux](https://github.com/KRDS-uiux/krds-uiux) | ~0.3k | check LICENSE | Adopt principles | KR public UX/a11y/info architecture; cite when used |
+| [MengTo/Skills](https://github.com/MengTo/Skills) | ~3.9k | MIT | Adopt principles | Procedural UI/landing skill shape — selective, no wholesale copy |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills) | ~23k | MIT | Adopt principles | Motion/interaction/UI quality — polish tasks only |
+| [jakubkrehel/make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better) | check | check LICENSE | Adopt principles | Micro UI polish after screens exist; tokens first |
+| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | check | check LICENSE | Adopt principles | Role-based review viewpoints only — no persona pack install |
+| [UI Skills](https://www.ui-skills.com/) | n/a | check site terms | Explore only | Discovery index; verify license before any import |
+
+### Curated design/UI skill sources — triggers (do not install wholesale)
+
+**Policy:** Famous ≠ install all. Convert only missing, higher-quality **principles** into English `.cursor/skills/` or thin rules via `external-skill-import`. Full Korean role text: `docs/pvc-guide/ko/core/03-skill-and-reference-governance.md` §4.
+
+| Source | When to pull principles | Convert into | Never |
+|--------|-------------------------|--------------|-------|
+| [MengTo/Skills](https://github.com/MengTo/Skills) | Landing/UI workflow, skill file shape | Project `SKILL.md` for that task | Copy entire library / heavy WebGL by default |
+| [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | Writing/updating `DESIGN.md` outline | Sections in project DESIGN.md | Clone another brand’s look |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills) | Motion, interaction audit, UI feel | Checklist skill or design notes | Decorative motion on every CRUD screen |
+| [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better) | Polishing existing UI | Small token-aligned tweaks | Redesign whole product |
+| [agency-agents](https://github.com/msitarzewski/agency-agents) | Multi-perspective review (UX/QA/…) | Review checklist items | Install all agent personas globally |
+| [KRDS UI/UX](https://github.com/KRDS-uiux/krds-uiux) | A11y, forms, errors, public-trust UX | Patterns + cite KRDS | Blind copy of public-sector chrome |
+| [UI Skills](https://www.ui-skills.com/) | Finding candidate UI skills | Shortlist → `03` gate | Apply before reading license/source |
 
 ## Security & Supply Chain
 
