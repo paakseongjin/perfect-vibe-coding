@@ -1,0 +1,31 @@
+---
+description: "English canonical devops rules: git workflow, CI/CD, observability and Web Vitals budgets."
+alwaysApply: true
+---
+
+# PVC DevOps Rules (English Canonical)
+
+> Korean siblings: `devops/git-workflow.mdc`, `ci-cd.mdc`, `observability.mdc`.
+
+## 1. Git Workflow
+
+- Default **GitHub Flow**: `main` always deployable; short-lived `feature|fix|chore|docs|hotfix/*` via PR.
+- Use Git Flow only if `project-context` says so.
+- Commits: **Conventional Commits 1.0** — `feat`/`fix` required types; `docs|style|refactor|perf|test|build|ci|chore|revert`; breaking via `!` or `BREAKING CHANGE:`.
+- Language of commit messages: per `project-context` (default English).
+- PR: purpose, summary, how tested, risks; merge only after CI; no force-push to shared branches; no secrets/binaries/build dirs.
+
+## 2. CI/CD & Environments
+
+- Separate development / staging|preview / production configs, secrets, and data.
+- Prefer promoting the same artifact across envs.
+- Minimum gates: install (lockfile), lint/types, unit/integration tests, build, optional secret/vuln scan; deploy health/smoke.
+- Document rollback triggers and methods; prefer expand/migrate/contract for schema changes.
+- Do not casually rewrite CI/prod secrets; “deployed” requires evidence.
+
+## 3. Observability & Performance Budget
+
+- Log levels: error/warn/info/debug; structured logs; correlate request IDs; never log secrets/PII.
+- Capture unhandled errors/5xx/fatals in an aggregator when configured; never empty-catch to “finish”.
+- Default Web Vitals Good (p75): **LCP ≤ 2.5s**, **INP ≤ 200ms**, **CLS ≤ 0.1**; stricter budgets in `project-context`.
+- Alert on user impact (error rate, latency, critical API fail), not vanity CPU alone.

@@ -5,6 +5,9 @@
 
 확인일: **2026-07-30**
 
+추가 카탈로그: 고스타 GitHub 선별 목록은 [`GITHUB_STAR_CATALOG.md`](./GITHUB_STAR_CATALOG.md) (API로 star 수 확인).  
+영어 규칙 요약: `.cursor/rules/en/*.mdc` (카테고리별 canonical English).
+
 ## 보안
 
 | 자료 | URL | PVC 반영 위치 | 참고 범위 |

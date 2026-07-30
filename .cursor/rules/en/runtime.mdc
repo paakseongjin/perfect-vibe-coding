@@ -1,0 +1,29 @@
+---
+description: "English canonical runtime rules: platform targets, dependency policy, build output budgets."
+alwaysApply: true
+---
+
+# PVC Runtime Rules (English Canonical)
+
+> Korean siblings: `runtime/platform-targets.mdc`, `dependency-policy.mdc`, `build-output.mdc`.
+
+## 1. Platform Targets
+
+- Supported runtimes/browsers/OS come from **`project-context`**—do not invent bleeding-edge APIs.
+- Align local/CI/prod major versions (Twelve-Factor parity).
+- Polyfill/transpile only when required by declared targets; respect `browserslist` / `tsconfig.target`.
+- Avoid hardcoded absolute OS paths; document native addon platform limits.
+
+## 2. Dependency Policy
+
+- Add a package only if clear win vs hand-roll, acceptable license/size/maintenance, no duplicate, and approval when large.
+- No unapproved mass upgrades or framework swaps.
+- Commit lockfiles; run ecosystem audit tools; don’t ignore Critical/High without recorded risk acceptance.
+- Watch typosquatting and risky install scripts; remove unused deps after reference checks.
+
+## 3. Build Output
+
+- Don’t commit build artifacts as source of truth.
+- Production builds: minify, tree-shake, dead-code eliminate.
+- Budgets from `project-context` + Web Vitals; exceed → measure → report → optimize or get approval.
+- Prefer named/path imports over whole-library imports; hash static assets; don’t ship huge raw media.

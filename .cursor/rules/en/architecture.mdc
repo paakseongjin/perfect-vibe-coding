@@ -1,0 +1,39 @@
+---
+description: "English canonical rules for architecture: structure, API contracts, data integrity, testing pyramid."
+alwaysApply: true
+---
+
+# PVC Architecture Rules (English Canonical)
+
+> Korean siblings: `architecture/code-structure.mdc`, `data-integrity.mdc`, `testing-quality.mdc`.
+
+## 1. Code Structure & Web Baseline
+
+- Separate UI, state, domain, data access, integrations, utils, config, tests; respect existing layout/naming/dependency direction.
+- Prefer web standards, semantic HTML, CSS Grid/Flexbox; avoid framework lock-in without rationale.
+- Performance: load only what the first view needs; check rerenders, redundant fetches, leaks; optimize from measurements.
+
+## 2. API Contracts
+
+- Prefer existing project envelope. If greenfield: success `{ "data", "meta?" }`; errors prefer **RFC 9457** `application/problem+json` (`type`, `title`, `status`, `detail`, `instance`).
+- Do not leak stacks/SQL/secrets in client error bodies.
+- HTTP status alignment (RFC 9110): 200/201/204 success; 400 validation; 401 unauthenticated; 403 forbidden; 404 missing; 409 conflict; 422 only if project-standard; 429 rate limit; 500/503 server.
+- Boundary handlers split user-safe messages vs internal logs; distinguish retryable vs not.
+
+## 3. Data Integrity & Integrations
+
+- No delete/wipe/schema/bulk mutate without explicit approval; plan recovery; prefer migrations with rollback path.
+- Validate all untrusted input (users, uploads, webhooks, upstream APIs).
+- Never embed secrets in code, docs, logs, or client bundles.
+- Before changing APIs/DB/auth/FS/vendors, map callers/consumers; handle timeout, empty, duplicate, auth expiry, partial failure; fail closed for safety; show understandable errors + recovery.
+- Do not delete “unused-looking” code without search/tests; include rationale/impact/rollback in reports.
+- Manage temp/logs/cache/build artifacts via `.gitignore` and ops policy.
+
+## 4. Testing & Quality
+
+- Cannot claim zero bugs—reduce likelihood, detect, recover, report.
+- Top risks: data loss, integration break, merge conflict, duplication, scope drift, vulns, broken UI.
+- **Test pyramid:** Unit (pure domain/utils, many/fast) → Integration (API/DB/contracts) → few E2E (critical user journeys).
+- Coverage: aim ≥70% on critical business logic; don’t chase vanity UI %; always test failure paths for auth/payments/mutations.
+- Isolate external HTTP/payments/email with doubles; never hit prod DB; fix time to reduce flakiness.
+- Pre-done checklist: lint/types, build, relevant tests, happy/fail paths, regression, API/data checks, logs, viewports, a11y basics, design tokens, CODEMAP/docs.

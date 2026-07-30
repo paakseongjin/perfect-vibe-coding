@@ -102,20 +102,28 @@ Agent는 바로 같은 거버넌스 아래에서 일합니다.
 perfect-vibe-coding/
 ├── README.md
 ├── RULES_MAP.md
-├── docs/references/SOURCES.md    # 공인 출처 기록
+├── docs/references/
+│   ├── SOURCES.md                 # 공인 표준 출처
+│   └── GITHUB_STAR_CATALOG.md     # 고스타 GitHub 카탈로그
 └── .cursor/rules/
-    ├── core/           # 헌장·절차·토큰·Skill 거버넌스
-    ├── architecture/   # 구조·API·데이터·테스트
-    ├── security/       # 인증·입력검증·시크릿
-    ├── devops/         # Git·CI/CD·관찰성
-    ├── runtime/        # 플랫폼·의존성·빌드
-    ├── patterns/       # async·폼·캐시
-    ├── design/         # 디자인·타이포·접근성
-    ├── docs/           # CODEMAP·문서 표준
-    └── project/        # 프로젝트 고정 스펙
+    ├── core/ architecture/ security/ devops/ runtime/ patterns/ design/ docs/
+    ├── project/project-context.mdc   # KR+EN 고정 스펙
+    └── en/*.mdc                      # 카테고리별 English canonical (AI용)
 ```
 
-상세 트리는 [`RULES_MAP.md`](./RULES_MAP.md), 출처는 [`docs/references/SOURCES.md`](./docs/references/SOURCES.md).
+상세 트리: [`RULES_MAP.md`](./RULES_MAP.md)  
+공인 출처: [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)  
+고스타 제안: [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md)
+
+### 언어 이중화 (KR + EN)
+
+| 레이어 | 역할 |
+|--------|------|
+| 기존 `core/`…`design/` 등 | **한국어 상세 규정** (절차·표·양식) |
+| `en/*.mdc` | **영어 canonical** — 전문 개발 용어로 AI가 우선 파싱 |
+| `project-context.mdc` | 같은 파일 안에 **English + 한국어** 고정 스펙 |
+
+충돌 시: 보안·데이터 무결성 > `project-context` 기입값 > 한국어 상세와 영어 canonical의 공통 취지 > 고스타 카탈로그 제안.
 
 ### 규칙 우선순위 (충돌 시)
 
@@ -179,13 +187,33 @@ perfect-vibe-coding/
 | `form-handling` | 검증 계층, 접근성, 중복 제출 방지 |
 | `caching-strategy` | HTTP/CDN/클라이언트 캐시·무효화 |
 
-### `design/` · `docs/` · `project/`
+### `project/`
+
+| 파일 | 역할 |
+|------|------|
+| `project-context` | **KR+EN 고정 스펙**: Tech Stack 기본 예시(Node22/Bun, Next15/React19, Tailwind v4, Postgres+Prisma, Vercel/Railway), Forbidden, LCP/INP/CLS/TTFB/번들 예산, 주석 한국어·식별자 영어·커밋 영어, AI 패턴, 기술부채, 버전 핀 |
+
+### `en/` (English canonical)
+
+| 파일 | 대응 한국어 |
+|------|-------------|
+| `en/core` | `core/00`–`03` |
+| `en/architecture` | `architecture/*` |
+| `en/security` | `security/*` |
+| `en/devops` | `devops/*` |
+| `en/runtime` | `runtime/*` |
+| `en/patterns` | `patterns/*` |
+| `en/design` | `design/*` |
+| `en/docs` | `docs/*` + 카탈로그 포인터 |
+
+### `design/` · `docs/`
 
 | 파일 | 역할 |
 |------|------|
 | `design/*` | 토큰·한글 타이포·WCAG |
-| `docs/*` | CODEMAP·문서 SSOT |
-| `project/project-context` | **고정 스펙 템플릿** (스택·Forbidden·Budget·Naming) — 복사 후 필수 작성 |
+| `docs/codemap-maintenance` | CODEMAP |
+| `docs/documentation-standard` | 문서 SSOT |
+| `docs/reference-catalog` | 고스타 카탈로그 인덱스 |
 
 ---
 
@@ -369,12 +397,13 @@ Agent에게 첫 메시지로 이렇게 지시해도 됩니다.
 
 새 프로젝트를 PVC로 시작할 때:
 
-- [ ] `.cursor/rules/` 전체 복사 (+ 필요 시 `docs/references/SOURCES.md`)
-- [ ] `project-context.mdc` 고정 스펙 작성 (스택·Forbidden·Budget·Naming)
+- [ ] `.cursor/rules/` 전체 복사 (+ `docs/references/`)
+- [ ] `project-context.mdc` 고정 스펙을 **프로젝트 실제 값으로** 수정 (기본 예시는 Next 스택)
 - [ ] `README.md` / `CODEMAP.md` 초안
 - [ ] (UI면) `DESIGN.md` / 토큰 방향 초안
 - [ ] auth·시크릿·CI 정책을 프로젝트 값으로 구체화
-- [ ] Cursor에서 rules 로드 확인
+- [ ] 필요 시 `GITHUB_STAR_CATALOG.md`에서 후보만 골라 `03` 절차로 도입
+- [ ] Cursor에서 rules 로드 확인 (KR + `en/`)
 - [ ] 작은 작업으로 사전·완료 보고 동작 확인
 - [ ] 외부 Skill은 `03` 규정 통과 후에만 도입
 
@@ -382,21 +411,22 @@ Agent에게 첫 메시지로 이렇게 지시해도 됩니다.
 
 ## 공인 출처
 
-규칙은 블로그 유행이 아니라 아래급 원전을 **원칙만 변환**해 넣었습니다. 상세 표는 [`docs/references/SOURCES.md`](./docs/references/SOURCES.md).
+규칙은 블로그 유행이 아니라 아래급 원전을 **원칙만 변환**해 넣었습니다.
 
-- OWASP Cheat Sheet / ASVS / Top 10  
-- NIST SP 800-63B-4  
-- IETF RFC 9457, 9110, 9111  
-- Google web.dev Core Web Vitals  
-- Conventional Commits, GitHub Flow, SemVer  
-- Twelve-Factor App, Martin Fowler Test Pyramid, WCAG 2.2  
+- 표준·임계값: [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)  
+  (OWASP, NIST SP 800-63B-4, RFC 9457/9110/9111, Web Vitals, Conventional Commits, …)
+- 고스타 GitHub 제안·별점·라이선스·PVC 매핑: [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md)  
+  (예: airbnb/javascript ~148k, nodebestpractices ~105k, clean-code-javascript ~95k, OWASP CheatSheet ~33k, shadcn/ui ~120k, VoltAgent awesome-design-md ~105k, …)  
+  → 도입은 항상 `03` 거버넌스 + `project-context` 우선.
 
 ---
 
 ## 맵 문서
 
 폴더 트리: [`RULES_MAP.md`](./RULES_MAP.md)  
-출처·적용 범위: [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)
+출처·적용 범위: [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)  
+고스타 카탈로그: [`docs/references/GITHUB_STAR_CATALOG.md`](./docs/references/GITHUB_STAR_CATALOG.md)
 
 규칙 본문을 수정할 때는 **한 파일 = 한 책임**을 유지하고,  
-중복이 생기면 `03-skill-and-reference-governance`의 중복 검사로 통합을 먼저 검토하세요.
+한국어 상세를 바꾸면 `en/` canonical도 같은 취지로 맞추며,  
+중복이 생기면 `03-skill-and-reference-governance`로 통합을 먼저 검토하세요.

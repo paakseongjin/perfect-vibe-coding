@@ -1,0 +1,33 @@
+---
+description: "English canonical security rules: auth/session, input validation, secrets. Based on OWASP and NIST principles."
+alwaysApply: true
+---
+
+# PVC Security Rules (English Canonical)
+
+> Korean siblings: `security/auth.mdc`, `input-validation.mdc`, `secret-management.mdc`.
+
+## 1. Authentication & Sessions
+
+- Choose auth by threat model and clients—not fashion: server session+cookie, OAuth2.1/OIDC, short-lived JWT+refresh, or machine mTLS/API keys.
+- Do not store access/refresh tokens in `localStorage`/`sessionStorage`. Prefer **HttpOnly + Secure + appropriate SameSite** cookies for browsers.
+- Keep access tokens short-lived; rotate refresh tokens; revoke on logout/password/privilege change.
+- Issue a **new session id on login/re-auth** (session fixation). Use TLS everywhere; consider HSTS.
+- Separate authentication from authorization; never treat “logged in” as full access.
+- Store passwords with suitable KDF+salt (NIST SP 800-63B). Defend CSRF for cookie sessions; tighten CORS with credentials.
+
+## 2. Input Validation & Attack Surface
+
+- Trust nothing external; **server-side validation is mandatory**; client checks are UX only.
+- Prefer allowlists; encode/escape for output context (HTML/URL/JS/CSS/SQL binding).
+- Mitigate SQLi (parameterized/ORM), XSS (auto-escape/sanitizer/CSP), CSRF, command/path injection, SSRF (allowlist hosts).
+- Uploads: size/type/magic-byte checks; non-executable storage; server-generated filenames.
+- Schema-validate at boundaries; authorize per resource action (IDOR); rate-limit abuse.
+- Fail closed; user-safe messages vs detailed logs; log security-relevant denials.
+
+## 3. Secrets Management
+
+- Never commit secrets, put them in public env prefixes, or log them.
+- `.env` gitignored; `.env.example` names + dummies only.
+- Load/validate config at boot (fail fast); centralize env access; fake values in fixtures.
+- Use secret scanning (e.g. gitleaks) in hooks/CI; on leak, **rotate keys**, don’t only rewrite git history.

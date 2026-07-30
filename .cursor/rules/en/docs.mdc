@@ -1,0 +1,25 @@
+---
+description: "English canonical docs rules: CODEMAP maintenance, documentation SSOT, high-star catalog pointer."
+alwaysApply: true
+---
+
+# PVC Documentation Rules (English Canonical)
+
+> Korean siblings: `docs/codemap-maintenance.mdc`, `documentation-standard.mdc`, `reference-catalog.mdc`.
+
+## 1. CODEMAP
+
+- Keep root `CODEMAP.md` (or equivalent) with: purpose/users, stack/runbook, top folders/files, screen/API/DB/vendor links, entry points/data flows, build/test/deploy/backup, secret *locations* (not values), dependency/version cautions, known limits/debt.
+- Any new/changed/removed folder, feature, API, model, env var, or integration updates CODEMAP before “done”.
+- CODEMAP ≠ code ⇒ not done.
+
+## 2. Documentation Standard
+
+- Document structural, schema, integration, design-token, and security-policy changes (purpose, targets, blast radius, migration/recovery, verification, rollback, follow-ups).
+- Single source of truth per concern: README, CODEMAP, ARCHITECTURE, DESIGN, TYPEGUIDE, CHANGELOG, `.cursor/rules/`, `docs/`, and `docs/references/SOURCES.md` + `GITHUB_STAR_CATALOG.md`.
+
+## 3. External Catalogs
+
+- High-star GitHub proposals: `docs/references/GITHUB_STAR_CATALOG.md`
+- Official standards provenance: `docs/references/SOURCES.md`
+- Import flow always through `core/03` + English `en/core.mdc` §4.

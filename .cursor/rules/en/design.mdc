@@ -1,0 +1,30 @@
+---
+description: "English canonical design rules: design system, Korean typography notes, accessibility (WCAG)."
+alwaysApply: true
+---
+
+# PVC Design Rules (English Canonical)
+
+> Korean siblings: `design/design-system.mdc`, `typography-korean.mdc`, `accessibility.mdc`.
+
+## 1. Design System First
+
+- Build UI from shared tokens/components, not one-off page styles.
+- Tokenize color, type, space, radius, elevation, motion, state.
+- Reuse buttons/inputs/modals/tables/alerts; minimize inline/arbitrary colors and meaningless class names.
+- Same semantics → same component/language/color meaning across screens.
+- Keep `docs/design/` (or equivalent) current; update CODEMAP when the system changes.
+
+## 2. Typography (incl. Korean)
+
+- Single source: `TYPEGUIDE.md` / design docs; sizes/line-height/weight via tokens.
+- Keep KR+EN mixed layouts readable; consistent role scale (title/body/caption/label).
+- Don’t break layout on wrapping/ellipsis/long Korean strings; preserve readability on small screens.
+- Changing type tokens requires checking key screens + docs.
+
+## 3. Accessibility
+
+- Semantic HTML, keyboard use, visible focus, contrast, alt text, clear errors by default.
+- Reference **WCAG 2.2**; adapt only when real user/device constraints require it.
+- Clickable ⇒ keyboard operable; manage focus in dialogs/menus.
+- Don’t convey state by color alone; keep responsive operability; verify a11y in done checklist.

@@ -1,0 +1,46 @@
+---
+description: "English canonical rules for PVC core layer: governance, safe work, token efficiency, skill/reference governance. Use with Korean siblings under core/."
+alwaysApply: true
+---
+
+# PVC Core Rules (English Canonical)
+
+> Sibling Korean files: `core/00`–`03`. If conflict: security > this protocol > `project-context` > design > patterns > external refs.  
+> Do not duplicate new policy here—extend the Korean source file and mirror English.
+
+## 1. Development Governance
+
+- Apply to all design, code, refactor, data, UI, docs, and release prep.
+- Priority: (1) security/PII/secrets/data integrity (2) safe-work + devops change control (3) project/runtime/architecture (4) design (5) patterns/task briefs (6) general practice / gated external refs only.
+- Quality first: minimal, clear, testable, maintainable; no speculative optimization; no scope creep.
+- Separation of concerns: UI, state, domain, data access, integrations, utils, config, tests.
+- Preserve completed production code; no silent rewrites—impact analysis + regression first.
+- External references: fitness over fame; record as proposal vs apply; no unapproved large imports.
+- Forbidden without explicit approval: destructive data ops, behavior removals, auth/API contract changes, secret exposure, mass dependency upgrades, folder reshuffles, “done” without tests/docs/CODEMAP, rogue page styles, copying unverified code, hiding errors with hacks.
+- Done only if purpose met, scope minimal, data/features safe, integrations checked, design consistent, tests run, risks reported, docs updated, rollback known, tokens not wasted.
+
+## 2. Safe Work Protocol
+
+Before coding: clarify goal/targets/done-criteria; read rules + CODEMAP + architecture/design docs; map related UI/API/data/tests; risk-check; pre-report; ask if ambiguous; never unapproved big refactors/stack swaps.
+Pre-report fields: purpose, targets, impacted surfaces, preserved behavior, steps, risks, verification, decisions needed.
+Minimize diffs; no full-file rewrites; no silent feature removal; formatting/deps/moves only if in scope.
+Stop and escalate: ambiguous requirements, data migration, behavior change risk, auth/PII/payments, untested critical logic, unclear intent, rule conflicts, scope creep, hard-to-revert changes.
+Completion report: what shipped, files/roles, preserved behavior, data/API impact, verification + results, risks, rollback, doc/CODEMAP updates, follow-ups, open questions.
+
+## 3. Token & Context Efficiency
+
+- Touch only needed files; avoid re-dumping large files; widen search only with new evidence.
+- Prefer simplest maintainable fix; add libraries only with clear quality/security/time wins.
+- Large analysis order: CODEMAP/dir/symbol search → relevant sections → expand only as needed; skip lockfiles/minified/bundles.
+- Long sessions: keep short state summaries (goal, decisions, files, TODOs, blockers); reload summary → CODEMAP → targets, not full re-scan.
+- User responses: conclusions, impact, decisions, results; plans before code; summaries after; mark uncertainty.
+
+## 4. Skill & Reference Governance
+
+- Local code/docs/rules/DESIGN/CODEMAP beat external skills.
+- No duplicates; minimal import; preserve provenance (URL, license, date, purpose); transform to project context; no unapproved mass installs.
+- Classify work; inventory local rules/skills; score fitness (purpose, stack, ops, duplication, maintenance, security, a11y/perf, license, cost).
+- Outcomes: apply now / park as proposal / reject.
+- Allowed source roles (see also `03` Korean file + GITHUB_STAR_CATALOG): MengTo/Skills, VoltAgent DESIGN.md structure, emilkowalski/skills, make-interfaces-feel-better, agency-agents viewpoints, KRDS (cite), ui-skills.com discovery.
+- New MDC/Skill only if real recurring gap, clear acceptance criteria, license OK; single responsibility per file.
+- Pre/post report templates and final 12-question checklist in Korean `03` apply equally.

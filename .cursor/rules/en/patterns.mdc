@@ -1,0 +1,27 @@
+---
+description: "English canonical implementation patterns: async UI states, forms, caching."
+alwaysApply: true
+---
+
+# PVC Patterns Rules (English Canonical)
+
+> Korean siblings: `patterns/async-patterns.mdc`, `form-handling.mdc`, `caching-strategy.mdc`.
+
+## 1. Async Patterns
+
+- Prefer `async/await` with explicit error handling; no silent fire-and-forget.
+- Use `Promise.all` vs `allSettled` deliberately; prefer `AbortController` for cancellation.
+- UI states: `idle | loading | success | error`; prevent double-submit; provide retry; avoid late responses overwriting newer UI.
+- Timeouts/retries only when idempotent; don’t empty-catch; don’t block UI thread with huge sync work.
+
+## 2. Form Handling
+
+- Validate at field, form, and **server** layers; never trust client-only checks.
+- Accessible labels (not placeholder-only); errors near fields + `aria-invalid`/`aria-describedby`; not color-only.
+- Preserve input on network failure; idempotency keys when needed; reuse project form library/patterns.
+
+## 3. Caching
+
+- Correctness over micro-gains; include user/tenant/auth scope in keys; plan TTL/invalidation with every write path.
+- Authenticated responses: `private` cache; don’t CDN-share user-specific data.
+- After mutations, invalidate/update related lists/details; never long-term cache raw secrets.
