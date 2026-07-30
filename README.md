@@ -143,9 +143,10 @@ perfect-vibe-coding/
 | 파일 | 역할 |
 |------|------|
 | `00-development-governance` | 헌장, 우선순위, 금지·최종 기준 |
-| `01-safe-work-protocol` | 사전/완료 보고, 중단 조건 |
-| `02-token-efficiency` | 최소 자원 + **컨텍스트 윈도우·세션 요약** |
-| `03-skill-and-reference-governance` | 외부 Skill 선별·중복 방지·출처 |
+| `01-safe-work-protocol` | 사전/완료 보고, 중단 조건 (+ Feature Brief 권장) |
+| `02-token-efficiency` | 최소 자원 + 컨텍스트 윈도우·세션 요약 |
+| `03-skill-and-reference-governance` | 외부 Skill 선별·중복 방지·출처 (+ §4.8 agentic refs) |
+| `04-agentic-context-workflow` | Research→Plan→Execute→Review→Ship, Brief/Blueprint, Skill 인프라, 칸반 패턴 |
 
 ### `architecture/`
 

@@ -93,6 +93,18 @@ PVC already encodes OWASP/NIST/RFC/Web Vitals. This file lists **additional comm
 | [public-apis/public-apis](https://github.com/public-apis/public-apis) | ~453k | Public API directory — not architecture gospel |
 | [trekhleb/javascript-algorithms](https://github.com/trekhleb/javascript-algorithms) | ~196k | Learning algorithms — not app structure |
 
+## Agentic engineering & vibe workflow (2026-07-30)
+
+| Repo | Stars | License | PVC fit | Note |
+|------|------:|---------|---------|------|
+| [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) | ~64k | MIT | Adopt principles | Agentic catalog: plan-first, R→P→E→R→S, context hygiene, skills/hooks patterns → `core/04` |
+| [coleam00/context-engineering-intro](https://github.com/coleam00/context-engineering-intro) | ~14k | MIT | Adopt principles | Feature Brief + Implementation Blueprint (PRP-style), examples/, validation loops → `docs/templates/` |
+| [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) | ~28k | Apache-2.0 | Optional proposal | Kanban + isolated agent workspaces; **product sunsetting**—use pattern only, do not require install |
+| [datawhalechina/easy-vibe](https://github.com/datawhalechina/easy-vibe) | ~19k | check LICENSE | Explore only | Beginner→ship vibe coding course; reinforce Brief/Blueprint, not skip PVC gates |
+| [refly-ai/refly](https://github.com/refly-ai/refly) | ~7.5k | custom OSS | Optional proposal | Skills as versioned infrastructure / registry mindset → `03` + `04`; no forced Refly hosting |
+
+Primary PVC rule: **`core/04-agentic-context-workflow.mdc`**. Source roles also listed in **`03` §4.8**.
+
 ---
 
 ## Mapping to PVC folders / PVC 폴더 매핑
@@ -106,6 +118,7 @@ PVC already encodes OWASP/NIST/RFC/Web Vitals. This file lists **additional comm
 | `design/` | Tailwind, shadcn/ui (optional), awesome-design-md (structure), KRDS |
 | `devops/` | conventional-changelog, gitignore, web-vitals |
 | `core/03` | MengTo/Skills, emilkowalski/skills, VoltAgent DESIGN.md |
+| `core/04` | claude-code-best-practice, context-engineering-intro, refly, vibe-kanban (pattern), easy-vibe |
 
 ---
 

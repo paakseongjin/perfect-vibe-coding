@@ -321,6 +321,22 @@ https://github.com/KRDS-uiux/krds-uiux
 - 기존 로컬 Skill과의 중복 여부를 우선 검사한다.
 - 단순 아이디어·스타일 참조는 제안사항으로만 기록하고, 코드·규정·자산을 가져올 때는 출처와 사용 조건을 명시한다.
 
+### 4.8 Agentic / Context Engineering / Vibe 학습 자료
+
+상세 적용 원칙은 `core/04-agentic-context-workflow.mdc` 와 `docs/templates/*` 를 따른다. 여기서는 **허용 참고 출처와 역할 범위**만 고정한다.
+
+| 자료 | URL | 역할 범위 | 금지 |
+|------|-----|-----------|------|
+| claude-code-best-practice | https://github.com/shanraisshan/claude-code-best-practice | Research→Plan→Execute→Review→Ship, 세션/컨텍스트 위생, Skill progressive disclosure, plan-first | Claude 전용 설정·플러그인 통째 이식 |
+| context-engineering-intro | https://github.com/coleam00/context-engineering-intro | Feature Brief / Implementation Blueprint(PRP형), examples 폴더, validation loop | Claude slash command 강제 |
+| refly-ai/refly | https://github.com/refly-ai/refly | Skill을 버전 있는 인프라로 보는 관점, 원자적·재사용 가능 Skill | Refly 서버/플랫폼 무단 종속 |
+| BloopAI/vibe-kanban | https://github.com/BloopAI/vibe-kanban | 이슈 칸반·브랜치 격리·리뷰 중심 작업 패턴 (제품 sunsetting → 패턴만) | 도구 설치 강제 |
+| datawhalechina/easy-vibe | https://github.com/datawhalechina/easy-vibe | 바이브→제품 학습 경로, 의도 서술 후 구현 | 검증·문서 생략한 “말만 코딩” |
+
+- 확인일: 2026-07-30 (star·라이선스는 `docs/references/GITHUB_STAR_CATALOG.md` 갱신)
+- Cursor 대응: `.cursor/rules/`, `.cursor/skills/`, Task/서브에이전트, `docs/templates/`
+- 기존 `01` 사전보고·`02` 토큰 규칙·보안 규정과 충돌하면 항상 기존 PVC가 우선한다.
+
 ---
 
 ## 5. 중복 방지 시스템

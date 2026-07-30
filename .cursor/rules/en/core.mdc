@@ -41,6 +41,16 @@ Completion report: what shipped, files/roles, preserved behavior, data/API impac
 - No duplicates; minimal import; preserve provenance (URL, license, date, purpose); transform to project context; no unapproved mass installs.
 - Classify work; inventory local rules/skills; score fitness (purpose, stack, ops, duplication, maintenance, security, a11y/perf, license, cost).
 - Outcomes: apply now / park as proposal / reject.
-- Allowed source roles (see also `03` Korean file + GITHUB_STAR_CATALOG): MengTo/Skills, VoltAgent DESIGN.md structure, emilkowalski/skills, make-interfaces-feel-better, agency-agents viewpoints, KRDS (cite), ui-skills.com discovery.
+- Allowed source roles (see also `03` Korean file + GITHUB_STAR_CATALOG): MengTo/Skills, VoltAgent DESIGN.md structure, emilkowalski/skills, make-interfaces-feel-better, agency-agents viewpoints, KRDS (cite), ui-skills.com discovery; plus agentic/context sources in `03` §4.8 / `04-agentic-context-workflow`.
 - New MDC/Skill only if real recurring gap, clear acceptance criteria, license OK; single responsibility per file.
 - Pre/post report templates and final 12-question checklist in Korean `03` apply equally.
+
+## 5. Agentic Context Workflow (see `core/04-agentic-context-workflow.mdc`)
+
+- Default loop: Research → Plan → Execute → Review → Ship; no code-first for ambiguous multi-file work.
+- Context engineering: rules + project-context + CODEMAP + Feature Brief + Blueprint + examples beat clever one-line prompts.
+- Templates: `docs/templates/FEATURE_BRIEF.md`, `docs/templates/IMPLEMENTATION_BLUEPRINT.md`.
+- Skills = versioned infrastructure; progressive disclosure; no marketplace bulk install.
+- Session hygiene: new task → new session when needed; rewind/restate beats stacked corrections; subagents return conclusions.
+- Optional kanban/worktree isolation for parallel agents; do not require Vibe Kanban or Refly hosting.
+- Easy-Vibe: describe intent, still enforce PVC validation and docs.

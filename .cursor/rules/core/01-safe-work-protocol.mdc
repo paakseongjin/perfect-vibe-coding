@@ -34,6 +34,8 @@ alwaysApply: true
 
 사용자의 확인이 필요한 사안이 있으면 구현을 시작하지 않는다.
 
+비단순·다파일 기능은 `docs/templates/FEATURE_BRIEF.md` 와 `docs/templates/IMPLEMENTATION_BLUEPRINT.md` 를 권장한다 (`core/04-agentic-context-workflow`).
+
 ## 3. 변경 최소화 원칙
 
 - 요청한 문제를 해결하기 위해 필요한 최소 파일만 수정한다.
