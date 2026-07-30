@@ -1,5 +1,17 @@
 # PVC Decisions Log
 
+## 2026-07-30 — README full Korean textbook guide
+
+### Decision
+
+- Expanded root `README.md` into a non-expert textbook / product manual / complete guide (TOC, install, survey, prompts, risk, glossary, roadmaps, FAQ).
+
+### Why
+
+- User requested a detailed, easy-to-read guide for non-developers beyond the short onboarding README.
+
+---
+
 ## 2026-07-30 — Foundation polish (LICENSE, install tiers, risk, smoke)
 
 ### Decision
