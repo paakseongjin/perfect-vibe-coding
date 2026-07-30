@@ -39,6 +39,18 @@ Triggers and never-do: `docs/references/GITHUB_STAR_CATALOG.md` (Curated design/
 3. Pre-report and get approval for non-trivial imports.
 4. Prefer `.cursor/skills/<name>/SKILL.md` for procedures—do not copy into always-on rules.
 
+## New rule/skill file gate
+
+Before creating a **new** `.mdc` or `SKILL.md`, answer:
+
+1. Would one line in an existing file solve it?
+2. Has this problem repeated ≥3 times?
+3. Can globs or task type auto-apply it?
+4. Must the agent see this every time (always-on)?
+5. Can lint/CI/scripts replace it?
+
+If **three or more** answers are “no” → keep it as a doc/checklist under `docs/`, not a new always-on rule. Prefer extending existing files. Default bias: **reject new files** unless evidence of repeated need.
+
 ## After import
 
 Cite sources; note what was not applied; update CODEMAP/catalog if structure changed.
@@ -46,3 +58,4 @@ Cite sources; note what was not applied; update CODEMAP/catalog if structure cha
 Catalog: `docs/references/GITHUB_STAR_CATALOG.md`  
 Import skill: `.cursor/skills/external-skill-import/SKILL.md`  
 Full Korean procedures/templates: `docs/pvc-guide/ko/core/03-skill-and-reference-governance.md`
+Boundaries: `RULES_MAP.md` (Responsibility boundaries)

@@ -1,16 +1,33 @@
 # PVC Decisions Log
 
-## 2026-07-30 — Mandatory Korean development-direction survey
+## 2026-07-30 — Survey recommended (not mandatory) + UX polish
 
 ### Decision
 
-- Added `docs/pvc/개발방향-설문.md` as a **required** pre-PVC questionnaire for non-experts to produce concrete development direction.
-- Agent must not start greenfield implementation without required survey sections; answers feed `project-context` / CODEMAP.
-- Linked from README (step 0), `core/00`, `project-context`, and RULES_MAP.
+- `docs/pvc/개발방향-설문.md` remains a **standalone, downloadable planning tool** (권장). Not a hard gate to start PVC.
+- Added Quick / Standard / High Risk guidance inside the survey; Quick = 4 questions.
+- README reordered: **10-minute start first**; Rules/Skills/refs under “더 알아보기”.
+- `RULES_MAP.md` fixed Rules / Skills / Docs / Templates / References / Survey responsibilities.
+- `core/03` gained a 5-question **new file gate** (default: reject new always-on files).
+- Added `docs/pvc/CHECKLISTS.md` for install smoke + post-use retrospective.
+- Softened `core/00`, `project-context`, `skill-router`: recommend survey when vague; never block solely on empty survey.
 
 ### Why
 
-- Non-developers need guided questions to issue accurate vibe-coding instructions before rules/skills run.
+- External review: mandatory full survey raises entry friction for prototypes; README cognitive load; duplication risk as PVC grows.
+- User intent: keep the detailed survey for clearer briefs and agent accuracy, but as optional/recommended.
+
+---
+
+## 2026-07-30 — Mandatory Korean development-direction survey
+
+### Superseded
+
+Earlier “mandatory before PVC” wording is **superseded** by the decision above (recommended, not required).
+
+### Original note
+
+- Had added `개발방향-설문.md` and wired README/core as required pre-step for non-expert direction-setting.
 
 ---
 

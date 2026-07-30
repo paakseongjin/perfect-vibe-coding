@@ -5,8 +5,8 @@ alwaysApply: true
 
 # Project Facts
 
-> **Prerequisite:** Fill `docs/pvc/개발방향-설문.md` (Korean development-direction survey) before using PVC on a new product. This file must summarize those answers—not replace the survey.
-> Replace the example values below for each real project. Empty fields make the agent guess.
+> Keep this card short. Optionally summarize answers from `docs/pvc/개발방향-설문.md` (recommended planning survey—not required to start). Empty fields make the agent guess.
+> Replace the example values below for each real project.
 
 ## Product
 

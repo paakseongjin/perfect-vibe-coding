@@ -10,7 +10,7 @@ Conflict priority: security/PII/secrets/data > this core + project-context > glo
 ## Do
 
 - Follow explicit user instructions first; inspect existing code before editing.
-- Before greenfield PVC setup or first implementation: require a filled Korean survey at `docs/pvc/개발방향-설문.md` (or an attached copy). If missing/incomplete on required sections, do not implement—help the user complete it, then draft `project-context` from answers.
+- Prefer a filled `docs/pvc/개발방향-설문.md` (recommended planning survey; downloadable copy OK) to reduce guessing—**not mandatory**. If missing, proceed from `project-context` + user intent; state assumptions. For auth/payments/PII/DB/deploy/large scope, recommend Standard/High-Risk survey depth + `01-safe-work-protocol`.
 - Make the smallest safe change that solves the request.
 - Prefer clear, testable, maintainable code; no speculative refactors or scope creep.
 - Separate UI, state, domain, data access, integrations, utils, config, tests.
@@ -32,6 +32,7 @@ Purpose met, scope minimal, data/features safe, integrations checked, design con
 ## Where to look next
 
 - Project facts: `project/project-context.mdc`
+- Planning survey (recommended): `docs/pvc/개발방향-설문.md`
 - Skill routing: `.cursor/skills/skill-router/SKILL.md`
 - Heavy protocols (agent): `01-safe-work-protocol`, `03-skill-and-reference-governance`, `04-agentic-context-workflow`
 - Korean rationale (human): `docs/pvc-guide/ko/`

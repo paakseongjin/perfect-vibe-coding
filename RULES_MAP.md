@@ -2,11 +2,22 @@
 
 Language: **executable rules = English**. Korean rationales: `docs/pvc-guide/ko/`.
 
-## Mandatory before PVC (human, Korean)
+## Responsibility boundaries (do not duplicate)
+
+| Kind | Responsibility | Do not put here |
+|------|----------------|-----------------|
+| **Rules** (`.cursor/rules`) | Short must-do commands | Long procedures, fill-in forms |
+| **Skills** (`.cursor/skills`) | Step-by-step for one task type | Restating core constitution |
+| **Docs** (`docs/pvc-guide/ko`) | Why / examples for humans | Assuming auto-load into every chat |
+| **Templates** (`docs/templates`) | Copy-and-fill forms | Policy source of truth |
+| **References** (`docs/references`) | Provenance & candidates | “Install this repo wholesale” |
+| **Survey** (`docs/pvc/개발방향-설문.md`) | Optional planning draft (downloadable) | Blocking PVC start; replacing `project-context` |
+
+## Recommended planning survey (not mandatory)
 
 | File | Role |
 |------|------|
-| `docs/pvc/개발방향-설문.md` | Development-direction survey — **required** before greenfield use / first implementation |
+| `docs/pvc/개발방향-설문.md` | Korean development-direction questionnaire — **recommended** for clear briefs; Quick / Standard / High Risk modes |
 
 ## Always (`alwaysApply: true`)
 
@@ -21,7 +32,7 @@ Language: **executable rules = English**. Korean rationales: `docs/pvc-guide/ko/
 |------|------|
 | `core/01-safe-work-protocol.mdc` | Pre/completion reports for risky work |
 | `core/02-token-efficiency.mdc` | Context hygiene |
-| `core/03-skill-and-reference-governance.mdc` | External import gate |
+| `core/03-skill-and-reference-governance.mdc` | External import + new-file gate |
 | `core/04-agentic-context-workflow.mdc` | R→P→E→R→S |
 | `docs/reference-catalog.mdc` | Catalog pointer |
 

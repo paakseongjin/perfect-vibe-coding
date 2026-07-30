@@ -14,11 +14,10 @@ description: "Route vibe-coding tasks to the right PVC rules, skills, and catalo
 ## Do not use when
 
 - Trivial single-line copy change already covered by always-on core + project-context
-- Survey `docs/pvc/개발방향-설문.md` is missing on a new product — stop and complete the survey first (see core/00)
 
 ## Workflow
 
-0. New product / first PVC setup: verify `docs/pvc/개발방향-설문.md` has required sections filled. If not, help complete it; do not implement yet.
+0. If product intent is vague, **recommend** `docs/pvc/개발방향-설문.md` (Quick / Standard / High Risk)—do not block work solely because it is empty; fill or assume via `project-context` and state assumptions.
 1. Classify the request into one primary bucket:
 
 | Bucket | Load next |
