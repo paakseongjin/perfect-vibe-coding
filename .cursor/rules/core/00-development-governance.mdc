@@ -10,6 +10,7 @@ Conflict priority: security/PII/secrets/data > this core + project-context > glo
 ## Do
 
 - Follow explicit user instructions first; inspect existing code before editing.
+- Before greenfield PVC setup or first implementation: require a filled Korean survey at `docs/pvc/개발방향-설문.md` (or an attached copy). If missing/incomplete on required sections, do not implement—help the user complete it, then draft `project-context` from answers.
 - Make the smallest safe change that solves the request.
 - Prefer clear, testable, maintainable code; no speculative refactors or scope creep.
 - Separate UI, state, domain, data access, integrations, utils, config, tests.

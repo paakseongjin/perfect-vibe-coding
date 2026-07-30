@@ -1,5 +1,19 @@
 # PVC Decisions Log
 
+## 2026-07-30 — Mandatory Korean development-direction survey
+
+### Decision
+
+- Added `docs/pvc/개발방향-설문.md` as a **required** pre-PVC questionnaire for non-experts to produce concrete development direction.
+- Agent must not start greenfield implementation without required survey sections; answers feed `project-context` / CODEMAP.
+- Linked from README (step 0), `core/00`, `project-context`, and RULES_MAP.
+
+### Why
+
+- Non-developers need guided questions to issue accurate vibe-coding instructions before rules/skills run.
+
+---
+
 ## 2026-07-30 — Korean README textbook + curated UI sources
 
 ### Decision

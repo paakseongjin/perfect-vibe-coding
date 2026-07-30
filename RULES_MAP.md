@@ -2,6 +2,12 @@
 
 Language: **executable rules = English**. Korean rationales: `docs/pvc-guide/ko/`.
 
+## Mandatory before PVC (human, Korean)
+
+| File | Role |
+|------|------|
+| `docs/pvc/개발방향-설문.md` | Development-direction survey — **required** before greenfield use / first implementation |
+
 ## Always (`alwaysApply: true`)
 
 | File | Role |
