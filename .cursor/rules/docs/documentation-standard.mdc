@@ -33,3 +33,4 @@ alwaysApply: true
   - `CHANGELOG.md`: 사용자 또는 운영 관점의 변경 이력
   - `.cursor/rules/`: AI 작업 규칙과 강제 제약
   - `docs/`: 상세 운영·기술·사용자 문서
+  - `docs/references/SOURCES.md`: 외부 공인 출처와 적용 범위 (거버넌스 세트·프로젝트 공통)

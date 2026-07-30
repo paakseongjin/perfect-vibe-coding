@@ -56,9 +56,21 @@ Cursor가 작업할 때 항상 같은 우선순위·절차·완료 기준을 따
 - WCAG·키보드·포커스·색상만으로 상태 전달 금지
 - 한글 조판·TYPEGUIDE와의 정합성
 
-공공·병원·업무 시스템처럼 **신뢰·가독성·접근성**이 중요한 서비스에 특히 유리합니다.
+신뢰·가독성·접근성이 중요한 서비스(공공, 업무, 커머스, SaaS 등)에 특히 유리합니다.
 
-### 4. 외부 Skill을 “유행”이 아니라 “필요”로 고른다
+### 4. 방어만이 아니라 “잘하는 방향”도 있다
+
+PVC는 AI가 함부로 하지 못하게 막는 **방어 레이어**와,  
+일관된 품질로 구현하게 이끄는 **공격(가이던스) 레이어**를 함께 둡니다.
+
+| 레이어 | 역할 |
+|--------|------|
+| `security/` | 인증·검증·시크릿 — OWASP·NIST 기준 |
+| `devops/` | Git·CI/CD·관찰성 — Conventional Commits·Web Vitals |
+| `runtime/` | 타깃 플랫폼·의존성·번들 예산 |
+| `patterns/` | async·폼·캐시 등 반복 구현 패턴 |
+
+### 5. 외부 Skill을 “유행”이 아니라 “필요”로 고른다
 
 `03-skill-and-reference-governance`가 다음을 강제합니다.
 
@@ -70,13 +82,14 @@ Cursor가 작업할 때 항상 같은 우선순위·절차·완료 기준을 따
 Meng To, VoltAgent DESIGN.md, Emil Kowalski, KRDS 등  
 허용된 참고 출처의 **역할 범위**까지 정해 두어, AI가 멋있는 자료를 통째로 복사하지 않게 합니다.
 
-### 5. 프로젝트마다 다시 만들지 않아도 된다
+### 6. 프로젝트마다 다시 만들지 않아도 된다
 
 한 번 익힌 PVC를 다른 저장소에 복사하면,  
 Agent는 바로 같은 거버넌스 아래에서 일합니다.  
-프로젝트별로 채울 것은 주로 `project-context.mdc` 하나입니다.
+프로젝트별로 채울 것은 주로 `project-context.mdc` 하나입니다.  
+스택은 강제하지 않습니다. **고정 스펙 필드만 채우면** 웹·API·앱 모두에 쓸 수 있습니다.
 
-### 6. 토큰·비용을 아끼는 방향으로 움직인다
+### 7. 토큰·비용을 아끼는 방향으로 움직인다
 
 필요 파일만 읽고, 최소 수정하고, 결론·검증·남은 확인만 보고하도록 되어 있습니다.  
 바이브 코딩의 속도는 유지하면서 **불필요한 재생성 비용**을 줄입니다.
@@ -87,69 +100,92 @@ Agent는 바로 같은 거버넌스 아래에서 일합니다.
 
 ```text
 perfect-vibe-coding/
-├── README.md                 # 이 가이드
-├── RULES_MAP.md              # 폴더·파일 맵
-└── .cursor/
-    └── rules/
-        ├── core/             # 전역 헌장·절차·효율·Skill 거버넌스
-        ├── architecture/     # 구조·데이터·검증
-        ├── design/           # 디자인 시스템·타이포·접근성
-        ├── docs/             # CODEMAP·문서 표준
-        └── project/          # 프로젝트별 맥락 템플릿
+├── README.md
+├── RULES_MAP.md
+├── docs/references/SOURCES.md    # 공인 출처 기록
+└── .cursor/rules/
+    ├── core/           # 헌장·절차·토큰·Skill 거버넌스
+    ├── architecture/   # 구조·API·데이터·테스트
+    ├── security/       # 인증·입력검증·시크릿
+    ├── devops/         # Git·CI/CD·관찰성
+    ├── runtime/        # 플랫폼·의존성·빌드
+    ├── patterns/       # async·폼·캐시
+    ├── design/         # 디자인·타이포·접근성
+    ├── docs/           # CODEMAP·문서 표준
+    └── project/        # 프로젝트 고정 스펙
 ```
+
+상세 트리는 [`RULES_MAP.md`](./RULES_MAP.md), 출처는 [`docs/references/SOURCES.md`](./docs/references/SOURCES.md).
 
 ### 규칙 우선순위 (충돌 시)
 
-`00-development-governance`에 정의된 순서입니다.
-
-1. 보안 · 개인정보 · 데이터 무결성  
-2. 안전 작업 프로토콜 · 변경관리  
-3. 프로젝트별 기술·도메인 규칙  
+1. 보안 · 시크릿 · 데이터 무결성  
+2. 안전 프로토콜 · 변경관리 · devops  
+3. 프로젝트 맥락 · runtime · architecture  
 4. 디자인 시스템 · UI/UX  
-5. 기능별 구현 가이드 · 개별 지시  
-6. 일반 관행 · 외부 참고자료  
+5. patterns · 개별 지시  
+6. 일반 관행 · (03 절차를 거친) 외부 참고  
 
 ---
 
 ## 파일별 역할
 
-### `core/` — 모든 작업에 항상 적용
+### `core/`
 
 | 파일 | 역할 |
 |------|------|
-| `00-development-governance.mdc` | 전역 헌장. 품질·관심사 분리·완료 코드 보존, 외부자료 원칙, 금지 사항, 최종 완료 질문 10개 |
-| `01-safe-work-protocol.mdc` | 작업 전 필수 절차, 사전/완료 보고 양식, 변경 최소화, 작업 중단·질문 조건 |
-| `02-token-efficiency.mdc` | 최소 자원·간결 응답. 불필요한 전체 재출력·범위 밖 리팩터링 억제 |
-| `03-skill-and-reference-governance.mdc` | 외부 Skill·레퍼런스 선별, 중복 방지, MDC/Skill/DESIGN.md 생성 규격, 출처·라이선스 |
+| `00-development-governance` | 헌장, 우선순위, 금지·최종 기준 |
+| `01-safe-work-protocol` | 사전/완료 보고, 중단 조건 |
+| `02-token-efficiency` | 최소 자원 + **컨텍스트 윈도우·세션 요약** |
+| `03-skill-and-reference-governance` | 외부 Skill 선별·중복 방지·출처 |
 
-### `architecture/` — 코드와 데이터
-
-| 파일 | 역할 |
-|------|------|
-| `code-structure.mdc` | 모듈·폴더·관심사 분리, 웹 표준, 성능 기준 |
-| `data-integrity.mdc` | DB·API·연동 보호, 비밀값 비노출, 삭제/정리 제한 |
-| `testing-quality.mdc` | 무결성 목표, 작업 후 필수 검증 체크리스트 |
-
-### `design/` — UI의 일관성
+### `architecture/`
 
 | 파일 | 역할 |
 |------|------|
-| `design-system.mdc` | 토큰·컴포넌트 우선, 디자인 문서 운영 |
-| `typography-korean.mdc` | 한글 조판, TYPEGUIDE·토큰 정합 |
-| `accessibility.mdc` | WCAG 2.2, 키보드·포커스, 색상만으로 상태 전달 금지 |
+| `code-structure` | 모듈 분리 + **API `{data,meta}` / RFC 9457 에러 / HTTP 상태** |
+| `data-integrity` | DB·연동·삭제 제한 |
+| `testing-quality` | **테스트 피라미드·커버리지·픽스처/목킹** + 완료 검증 |
 
-### `docs/` — 문서가 코드와 같이 움직이게
-
-| 파일 | 역할 |
-|------|------|
-| `codemap-maintenance.mdc` | `CODEMAP.md` 의무 항목, 변경 시 최신화 |
-| `documentation-standard.mdc` | 단일 진실 공급원(README, CODEMAP, DESIGN 등), 변경 이력 형식 |
-
-### `project/` — 프로젝트마다 채우는 유일한 템플릿
+### `security/` (신규)
 
 | 파일 | 역할 |
 |------|------|
-| `project-context.mdc` | 목적, 스택, 도메인, 진입점, 참고 문서 — **복사 후 반드시 수정** |
+| `auth` | JWT/세션/OAuth 선택, HttpOnly 쿠키, 세션 고정 방지 (OWASP·NIST) |
+| `input-validation` | 서버 검증 필수, XSS·CSRF·인젝션·업로드 |
+| `secret-management` | `.env`·번들 노출 금지, 스캔·회전 |
+
+### `devops/` (신규)
+
+| 파일 | 역할 |
+|------|------|
+| `git-workflow` | GitHub Flow, Conventional Commits, PR 조건 |
+| `ci-cd` | env 분리, 품질 게이트, 롤백 |
+| `observability` | 로그 레벨, 에러 추적, **LCP≤2.5s / INP≤200ms / CLS≤0.1** |
+
+### `runtime/` (신규)
+
+| 파일 | 역할 |
+|------|------|
+| `platform-targets` | 지원 런타임·브라우저 — 추측 코딩 방지 |
+| `dependency-policy` | 패키지 도입·라이선스·audit |
+| `build-output` | 번들 예산·트리쉐이킹·산출물 |
+
+### `patterns/` (신규)
+
+| 파일 | 역할 |
+|------|------|
+| `async-patterns` | loading/success/error, 레이스, AbortController |
+| `form-handling` | 검증 계층, 접근성, 중복 제출 방지 |
+| `caching-strategy` | HTTP/CDN/클라이언트 캐시·무효화 |
+
+### `design/` · `docs/` · `project/`
+
+| 파일 | 역할 |
+|------|------|
+| `design/*` | 토큰·한글 타이포·WCAG |
+| `docs/*` | CODEMAP·문서 SSOT |
+| `project/project-context` | **고정 스펙 템플릿** (스택·Forbidden·Budget·Naming) — 복사 후 필수 작성 |
 
 ---
 
@@ -331,21 +367,36 @@ Agent에게 첫 메시지로 이렇게 지시해도 됩니다.
 
 ## 빠른 체크리스트
 
-새 웹 프로젝트를 PVC로 시작할 때:
+새 프로젝트를 PVC로 시작할 때:
 
-- [ ] `.cursor/rules/` 전체 복사  
-- [ ] `project-context.mdc` 작성  
-- [ ] `README.md` / `CODEMAP.md` 초안  
-- [ ] (UI면) `DESIGN.md` / 토큰 방향 초안  
-- [ ] Cursor에서 rules 로드 확인  
-- [ ] 작은 작업으로 사전·완료 보고 동작 확인  
-- [ ] 외부 Skill은 `03` 규정 통과 후에만 도입  
+- [ ] `.cursor/rules/` 전체 복사 (+ 필요 시 `docs/references/SOURCES.md`)
+- [ ] `project-context.mdc` 고정 스펙 작성 (스택·Forbidden·Budget·Naming)
+- [ ] `README.md` / `CODEMAP.md` 초안
+- [ ] (UI면) `DESIGN.md` / 토큰 방향 초안
+- [ ] auth·시크릿·CI 정책을 프로젝트 값으로 구체화
+- [ ] Cursor에서 rules 로드 확인
+- [ ] 작은 작업으로 사전·완료 보고 동작 확인
+- [ ] 외부 Skill은 `03` 규정 통과 후에만 도입
+
+---
+
+## 공인 출처
+
+규칙은 블로그 유행이 아니라 아래급 원전을 **원칙만 변환**해 넣었습니다. 상세 표는 [`docs/references/SOURCES.md`](./docs/references/SOURCES.md).
+
+- OWASP Cheat Sheet / ASVS / Top 10  
+- NIST SP 800-63B-4  
+- IETF RFC 9457, 9110, 9111  
+- Google web.dev Core Web Vitals  
+- Conventional Commits, GitHub Flow, SemVer  
+- Twelve-Factor App, Martin Fowler Test Pyramid, WCAG 2.2  
 
 ---
 
 ## 맵 문서
 
-폴더 트리만 빠르게 보려면 [`RULES_MAP.md`](./RULES_MAP.md)를 참고하세요.
+폴더 트리: [`RULES_MAP.md`](./RULES_MAP.md)  
+출처·적용 범위: [`docs/references/SOURCES.md`](./docs/references/SOURCES.md)
 
-규칙 본문을 수정할 때는 가능하면 **한 파일 = 한 책임**을 유지하고,  
-중복이 생기면 `03-skill-and-reference-governance`의 중복 검사 절차로 통합·보완을 먼저 검토하세요.
+규칙 본문을 수정할 때는 **한 파일 = 한 책임**을 유지하고,  
+중복이 생기면 `03-skill-and-reference-governance`의 중복 검사로 통합을 먼저 검토하세요.
