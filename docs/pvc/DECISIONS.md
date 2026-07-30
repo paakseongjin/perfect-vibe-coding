@@ -1,5 +1,20 @@
 # PVC Decisions Log
 
+## 2026-07-30 — Foundation polish (LICENSE, install tiers, risk, smoke)
+
+### Decision
+
+- Added MIT `LICENSE`.
+- README: clarify PVC as copyable Cursor template; **min / recommended / full** install table; empty-project CODEMAP prompt; Quick survey emphasis.
+- `core/00`: canonical Low / Medium / High / Critical risk table (README summarizes only).
+- `CHECKLISTS.md`: seven smoke scenarios with expected Agent behavior.
+
+### Why
+
+- Close real onboarding gaps for non-expert vibe coding without growing the rule surface.
+
+---
+
 ## 2026-07-30 — Survey recommended (not mandatory) + UX polish
 
 ### Decision

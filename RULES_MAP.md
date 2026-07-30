@@ -11,7 +11,17 @@ Language: **executable rules = English**. Korean rationales: `docs/pvc-guide/ko/
 | **Docs** (`docs/pvc-guide/ko`) | Why / examples for humans | Assuming auto-load into every chat |
 | **Templates** (`docs/templates`) | Copy-and-fill forms | Policy source of truth |
 | **References** (`docs/references`) | Provenance & candidates | “Install this repo wholesale” |
-| **Survey** (`docs/pvc/개발방향-설문.md`) | Optional planning draft (downloadable) | Blocking PVC start; replacing `project-context` |
+| **Survey** (`docs/pvc/개발방향-설문.md`) | Optional planning draft (downloadable); prefer Quick for prototypes | Blocking PVC start; replacing `project-context` |
+
+## Install units (see README)
+
+| Unit | Includes |
+|------|----------|
+| Minimum | `.cursor/rules/` + `.cursor/skills/` |
+| Recommended | Minimum + `docs/pvc/` + `docs/templates/` |
+| Full | Recommended + `docs/pvc-guide/ko/` + `docs/references/` |
+
+License: root `LICENSE` (MIT).
 
 ## Recommended planning survey (not mandatory)
 
@@ -23,7 +33,7 @@ Language: **executable rules = English**. Korean rationales: `docs/pvc-guide/ko/
 
 | File | Role |
 |------|------|
-| `core/00-development-governance.mdc` | Safety + minimal change + done criteria |
+| `core/00-development-governance.mdc` | Safety, risk tiers (Low–Critical), done criteria |
 | `project/project-context.mdc` | Project facts card |
 
 ## Agent requested (`alwaysApply: false`, no globs)
