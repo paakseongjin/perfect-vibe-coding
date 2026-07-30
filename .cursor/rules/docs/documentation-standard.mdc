@@ -1,36 +1,15 @@
 ---
-description: "문서 단일 진실 공급원과 변경 이력 기록 표준."
-alwaysApply: true
+description: "Documentation SSOT for structural and policy changes."
+globs:
+  - "**/*.md"
+  - "**/docs/**/*"
+alwaysApply: false
 ---
 
-# 문서화 표준
+# Documentation Standard
 
-## 1. 변경 이력 관리
+- Document structural, schema, integration, design-token, and security-policy changes (purpose, blast radius, migration/recovery, verification, rollback).
+- Single source of truth per concern: README, CODEMAP, ARCHITECTURE, DESIGN, TYPEGUIDE, CHANGELOG, `.cursor/rules/`, `docs/`.
+- Do not duplicate the same policy in rules + skills + Korean guide—link instead.
 
-- 구조적 변경, 데이터 스키마 변경, 외부 연동 변경, 디자인 토큰 변경, 보안 정책 변경은 반드시 문서화한다.
-- 주요 변경은 다음 형식으로 기록한다.
-
-  - 변경 목적
-  - 변경 대상
-  - 영향 범위
-  - 데이터 마이그레이션 또는 복구 필요 여부
-  - 검증 방법과 결과
-  - 롤백 방법
-  - 후속 확인 항목
-
-- 데이터 구조나 API 계약을 변경할 때는 하위 호환성, 기존 데이터 처리, 기존 화면과의 연동 영향을 먼저 확인한다.
-
-## 2. 문서의 단일 진실 공급원
-
-- 동일한 규칙이나 구조를 여러 문서에 중복 기록하여 서로 다른 내용이 생기지 않게 한다.
-- 각 문서는 명확한 단일 역할을 가진다.
-
-  - `README.md`: 프로젝트 개요와 빠른 시작
-  - `CODEMAP.md`: 구조, 파일 역할, 연동 관계
-  - `ARCHITECTURE.md`: 아키텍처 및 데이터 흐름
-  - `DESIGN.md`: 디자인 원칙과 컴포넌트 기준
-  - `TYPEGUIDE.md`: 타이포그래피 규칙
-  - `CHANGELOG.md`: 사용자 또는 운영 관점의 변경 이력
-  - `.cursor/rules/`: AI 작업 규칙과 강제 제약
-  - `docs/`: 상세 운영·기술·사용자 문서
-  - `docs/references/SOURCES.md`: 외부 공인 출처와 적용 범위 (거버넌스 세트·프로젝트 공통)
+Korean rationale: `docs/pvc-guide/ko/docs/documentation-standard.md`

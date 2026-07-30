@@ -1,0 +1,11 @@
+---
+description: "Incident response notes for production failures. Manual only."
+alwaysApply: false
+---
+
+# Manual: Incident Response
+
+1. Stabilize: rollback or feature-flag off if user impact is high.
+2. Preserve evidence: logs, deploy version, recent diffs (no secrets in paste).
+3. Fix with minimal change; add regression coverage.
+4. Postmortem: cause, blast radius, prevention; update DECISIONS if policy changes.

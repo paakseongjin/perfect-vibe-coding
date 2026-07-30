@@ -103,7 +103,23 @@ PVC already encodes OWASP/NIST/RFC/Web Vitals. This file lists **additional comm
 | [datawhalechina/easy-vibe](https://github.com/datawhalechina/easy-vibe) | ~19k | check LICENSE | Explore only | Beginner→ship vibe coding course; reinforce Brief/Blueprint, not skip PVC gates |
 | [refly-ai/refly](https://github.com/refly-ai/refly) | ~7.5k | custom OSS | Optional proposal | Skills as versioned infrastructure / registry mindset → `03` + `04`; no forced Refly hosting |
 
-Primary PVC rule: **`core/04-agentic-context-workflow.mdc`**. Source roles also listed in **`03` §4.8**.
+Primary PVC rule: **`core/04-agentic-context-workflow.mdc`** (agent-requested). Import via **`external-skill-import`** + **`skill-router`**.
+
+---
+
+## Situational skill sources (triggers) — 2026-07-30
+
+| Repo | Trigger (when to consider) | PVC fit | Do not |
+|------|----------------------------|---------|--------|
+| [mattpocock/skills](https://github.com/mattpocock/skills) | Need grill/spec/tdd/router patterns | Adopt principles | Install whole plugin set by default |
+| [obra/superpowers](https://github.com/obra/superpowers) | Plan→execute gates, subagent review | Adopt principles | Require Superpowers plugin |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | Context-window hygiene ideas | Optional proposal | Vendor 200+ skills bundle |
+| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | UI taste / visual polish asks | Optional proposal | Override `design/` tokens |
+| [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill) | Fresh multi-source research | Optional proposal | Use for ordinary coding tasks |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | Extreme minimalism / YAGNI reminders | Optional proposal | Duplicate if core already covers |
+| [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | — | Reject default | Conflicts with clear user reporting |
+
+Import path: `.cursor/skills/external-skill-import` → thin **English** `SKILL.md` only.
 
 ---
 
@@ -116,9 +132,8 @@ Primary PVC rule: **`core/04-agentic-context-workflow.mdc`**. Source roles also 
 | `runtime/` | nodebestpractices, TypeScript, eslint, prettier |
 | `patterns/` | TanStack Query, zod (when chosen), clean-code async sections |
 | `design/` | Tailwind, shadcn/ui (optional), awesome-design-md (structure), KRDS |
-| `devops/` | conventional-changelog, gitignore, web-vitals |
-| `core/03` | MengTo/Skills, emilkowalski/skills, VoltAgent DESIGN.md |
-| `core/04` | claude-code-best-practice, context-engineering-intro, refly, vibe-kanban (pattern), easy-vibe |
+| `core/03` + skills | MengTo/Skills, emilkowalski/skills, VoltAgent DESIGN.md, mattpocock/skills |
+| `core/04` | claude-code-best-practice, context-engineering-intro, refly, vibe-kanban (pattern), easy-vibe, superpowers (principles) |
 
 ---
 
@@ -128,4 +143,5 @@ Primary PVC rule: **`core/04-agentic-context-workflow.mdc`**. Source roles also 
 2. **`project-context.mdc` wins** over any starred repo’s default stack.  
 3. **`design/` tokens win** over shadcn/Tailwind demos’ visual language.  
 4. Star count ≠ fitness. Prefer license clarity + maintenance + stack match.  
-5. New MDC/Skill from these sources must pass duplicate check in `03`.
+5. New MDC/Skill from these sources must pass duplicate check in `03` / `external-skill-import`.  
+6. Executable rules/skills are **English only**; Korean text lives in `docs/pvc-guide/ko/` and is not always-on.

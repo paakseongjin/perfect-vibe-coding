@@ -1,69 +1,19 @@
 ---
-description: "테스트 피라미드·커버리지·픽스처/목킹·작업 후 검증 체크리스트."
-alwaysApply: true
+description: "Test pyramid and quality gates. Apply when editing tests or adding testable business logic."
+globs:
+  - "**/*.{test,spec}.{ts,tsx,js,jsx}"
+  - "**/e2e/**/*"
+  - "**/tests/**/*"
+  - "**/__tests__/**/*"
+alwaysApply: false
 ---
 
-# 검증 및 품질 보증
+# Testing & Quality
 
-## 1. 무결성 목표
+- Reduce likelihood of bugs; detect, recover, report—do not claim zero bugs.
+- Pyramid: many fast unit → integration at boundaries → few E2E for critical journeys.
+- Aim ≥70% on critical business logic; always test failure paths for auth/payments/mutations.
+- Isolate external HTTP/payments/email with doubles; never hit prod DB.
+- Before done: lint/types, build, relevant tests, happy/fail paths, CODEMAP/docs if structure changed.
 
-“오류가 절대 발생하지 않는다”는 선언만으로는 품질을 보장할 수 없다.
-모든 작업은 오류 가능성을 줄이고, 발생 시 탐지·복구·보고할 수 있어야 한다.
-
-- 데이터 유실, 연동 단절, 코드 충돌, 중복 생성, 범위 이탈, 보안 취약점, 화면 깨짐을 최우선 위험으로 본다.
-- 변경 전 영향도 분석, 변경 후 자동·수동 검증, 롤백 가능성 확보를 필수 절차로 한다.
-- 검증하지 않은 변경을 “완료”로 선언하지 않는다.
-
-## 2. 테스트 유형별 책임 (테스트 피라미드)
-
-| 유형 | 책임 | 속도/비용 |
-|------|------|-----------|
-| Unit | 순수 함수·도메인 규칙·유틸, 외부 I/O 최소화 | 빠르고 많음 |
-| Integration | API·DB·모듈 경계, 실제 또는 테스트 더블로 계약 검증 | 중간 |
-| E2E | 핵심 사용자 흐름 소수, UI→API→데이터 | 느리고 적음 |
-
-- 새 비즈니스 로직에는 Unit을 우선 추가한다.
-- 계약·권한·트랜잭션은 Integration으로 지킨다.
-- E2E는 “결제·로그인·핵심 생성” 등 **돈이 되거나 되돌리기 어려운 흐름**에 집중한다.
-- 같은 사실을 세 계층에서 중복 과도하게 검증하지 않는다.
-
-참고: Testing Pyramid 개념 (Martin Fowler / 업계 표준 관행)
-
-## 3. 커버리지 기준
-
-절대 숫자를 vanity로 쫓지 말고, **위험 대비 커버**를 본다.
-
-기본 권장 (프로젝트에서 재정의 가능, `project-context`에 기입):
-
-- 핵심 비즈니스 로직·도메인 순수 함수: **줄/분기 커버리지 70% 이상**을 목표
-- UI 전체를 억지로 70%에 맞추느라 brittle 테스트 양산 금지
-- 보안·결제·권한·데이터 변형 경로는 커버리지와 별개로 **반드시 실패 케이스 테스트**
-
-CI에 임계값이 있으면 그것을 따른다.
-
-## 4. 픽스처·목킹·격리
-
-- 외부 HTTP·결제·메일·클라우드 SDK는 기본으로 테스트 더블(mock/stub/fake)로 격리한다.
-- DB는 테스트 전용 DB·트랜잭션 롤백·컨테이너 등 프로젝트 표준을 쓴다. 운영 DB 금지.
-- 시간은 고정 가능하면 고정한다. (flaky 방지)
-- 픽스처는 최소·명시적 데이터. 거대 스냅샷 남발 지양.
-- 네트워크에 의존하는 테스트는 기본적으로 CI에서 비활성 또는 녹화(replay) 방식을 쓴다.
-
-## 5. 작업 후 필수 검증
-
-- 문법·타입·린트
-- 빌드·실행
-- 관련 Unit / Integration / E2E
-- 정상·실패 흐름
-- 핵심 회귀
-- API·데이터 저장 결과
-- 콘솔·네트워크·서버 로그
-- 주요 뷰포트 렌더링
-- 키보드·포커스·접근성 기본
-- 디자인 토큰·컴포넌트 규칙
-- CODEMAP·문서 갱신
-
-## Sources
-
-- Martin Fowler — TestPyramid — https://martinfowler.com/bliki/TestPyramid.html
-- 확인일: 2026-07-30
+Korean rationale: `docs/pvc-guide/ko/architecture/testing-quality.md`

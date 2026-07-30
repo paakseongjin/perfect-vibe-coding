@@ -1,29 +1,22 @@
 ---
-description: "데이터 무결성·연동 안정성·삭제/정리 제한. DB·API·외부 서비스 보호 규칙."
-alwaysApply: true
+description: "Data integrity and integration safety. Apply for API, DB, server, prisma, and data-layer edits."
+globs:
+  - "**/api/**/*"
+  - "**/server/**/*"
+  - "**/prisma/**/*"
+  - "**/*schema*.*"
+  - "**/db/**/*"
+  - "**/lib/**/*.{ts,js}"
+alwaysApply: false
 ---
 
-# 데이터 및 연동 보호
+# Data Integrity & Integrations
 
-## 1. 데이터 무결성
+- No delete/wipe/schema/bulk mutate without explicit approval; prefer migrations with rollback.
+- Validate all untrusted input (users, uploads, webhooks, upstream APIs).
+- Never embed secrets in code, docs, logs, or client bundles.
+- Before changing APIs/DB/auth/FS/vendors: map callers; handle timeout, empty, duplicate, auth expiry, partial failure; fail closed.
+- Do not delete “unused” code without search/tests; report rationale and rollback.
+- Manage temp/logs/cache/build artifacts via `.gitignore` and ops policy.
 
-- 데이터 삭제, 초기화, 덮어쓰기, 스키마 변경, 대량 수정은 명시적 승인 없이는 수행하지 않는다.
-- 데이터 변경 전에는 대상 범위, 변경 조건, 복구 방법을 확인한다.
-- 데이터베이스 변경은 가능한 경우 마이그레이션으로 관리하고, 되돌릴 수 있는 절차를 함께 준비한다.
-- 사용자 입력, 외부 API 응답, 파일 업로드 데이터는 신뢰하지 않고 유효성 검증과 오류 처리를 구현한다.
-- 개인정보, 인증정보, API 키, 비밀번호, 토큰, 내부 운영 데이터는 코드·문서·로그·클라이언트 번들에 노출하지 않는다.
-
-## 2. 연동 안정성
-
-- API, 데이터베이스, 인증, 파일 시스템, 외부 서비스 연동을 수정하기 전에 호출자와 소비자를 모두 확인한다.
-- API 계약 변경 시 요청·응답 형식, 오류 형식, 인증 방식, 버전 호환성을 점검한다.
-- 네트워크 실패, 시간 초과, 빈 응답, 중복 요청, 권한 만료, 부분 실패를 고려한 처리 흐름을 설계한다.
-- 사용자에게 오류를 숨기지 않는다. 이해 가능한 안내와 재시도 또는 복구 경로를 제공한다.
-- 외부 연동 실패가 핵심 데이터 손실이나 서비스 전체 장애로 이어지지 않도록 실패 격리와 안전한 예외 처리를 적용한다.
-
-## 3. 삭제 및 정리 제한
-
-- 코드, 파일, 데이터, 설정을 삭제하기 전에는 참조 여부와 실행 경로를 확인한다.
-- “사용되지 않아 보이는 코드”는 검색, 의존성 추적, 테스트, 실행 확인 없이 삭제하지 않는다.
-- 삭제가 필요하면 삭제 사유, 영향 범위, 대체 여부, 롤백 방법을 작업 보고에 포함한다.
-- 임시 파일, 로그, 캐시, 빌드 산출물은 프로젝트의 `.gitignore` 및 운영 정책에 따라 관리한다.
+Korean rationale: `docs/pvc-guide/ko/architecture/data-integrity.md`

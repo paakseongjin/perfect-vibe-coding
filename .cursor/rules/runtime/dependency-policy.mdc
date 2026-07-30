@@ -1,43 +1,21 @@
 ---
-description: "의존성 도입·라이선스·취약점 감사 정책. 무분별한 패키지 추가를 막는다."
-alwaysApply: true
+description: "Dependency add/remove/upgrade policy. Apply when changing package manifests or locks."
+globs:
+  - "**/package.json"
+  - "**/pnpm-lock.yaml"
+  - "**/package-lock.json"
+  - "**/yarn.lock"
+  - "**/bun.lockb"
+  - "**/requirements*.txt"
+  - "**/pyproject.toml"
+alwaysApply: false
 ---
 
-# 의존성 정책
+# Dependency Policy
 
-## 1. 신규 패키지 도입 조건
+- Add a package only with clear quality/security/time win, acceptable license/size, no duplicate, approval when large.
+- No unapproved mass upgrades or framework swaps.
+- Commit lockfiles; run ecosystem audits; don’t ignore Critical/High without recorded risk acceptance.
+- Watch typosquatting and risky install scripts; remove unused deps after reference checks.
 
-다음을 **모두** 만족할 때만 추가를 제안한다.
-
-1. 직접 구현보다 명확한 품질·보안·시간 이점이 있다.
-2. 유지보수·라이선스·번들/바이너리 크기 비용이 수용 가능하다.
-3. 동일 목적의 기존 의존성·내부 유틸과 중복되지 않는다.
-4. 활발히 유지되거나, 위험이 문서화된 채로 관리 가능하다.
-5. 사용자 승인이 필요한 규모면 사전 보고 후 진행한다.
-
-대량 업데이트·메이저 업·프레임워크 교체는 승인 없이 하지 않는다.
-
-## 2. 라이선스
-
-- OSI 승인 라이선스 등 프로젝트 정책에 맞는지만 확인한다.
-- copyleft가 배포 모델과 충돌하면 도입하지 않거나 법적 검토를 요청한다.
-- 라이선스 불명 패키지·자산은 사용하지 않는다.
-
-## 3. 보안 감사
-
-- 락파일을 커밋하고 CI/로컬에서 재현 가능한 설치를 한다.
-- `npm audit` / `pnpm audit` / `pip-audit` / OS 패키지 감사 등 **생태계 표준 도구**를 주기적으로 돌린다.
-- Critical/High는 방치하지 않는다. 당장 못 고치면 이슈·완화책·수락 위험을 기록한다.
-- 타이포스쿼팅·낯선 유지자·과도한 권한 postinstall 스크립트를 경계한다.
-
-## 4. 제거
-
-- 미사용 의존성은 참조 확인 후 제거한다.
-- 제거가 빌드·런타임을 깨면 롤백 가능한 단위로 진행한다.
-
-## Sources
-
-- OpenSSF / npm audit 관행 — https://docs.npmjs.com/cli/v10/commands/npm-audit
-- Choose a License (참고) — https://choosealicense.com/
-- OWASP Dependency-Check 개념 — https://owasp.org/www-project-dependency-check/
-- 확인일: 2026-07-30
+Korean rationale: `docs/pvc-guide/ko/runtime/dependency-policy.md`

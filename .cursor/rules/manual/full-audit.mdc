@@ -1,0 +1,9 @@
+---
+description: "Full audit checklist. Manual / on-demand only."
+alwaysApply: false
+---
+
+# Manual: Full Audit
+
+Review in order: security → data integrity → authz → secrets → deps audit → a11y → performance budgets → CODEMAP freshness → rule/skill duplication.
+Report findings by severity; do not mass-rewrite without approval.

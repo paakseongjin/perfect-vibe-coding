@@ -1,0 +1,12 @@
+---
+description: "Schema migration checklist. Manual / high-risk only."
+alwaysApply: false
+---
+
+# Manual: Migration
+
+1. Get explicit approval before destructive or schema changes.
+2. Prefer expand → deploy → contract.
+3. Plan rollback / forward-fix; never leave data unrecoverable.
+4. Update CODEMAP, migrations folder, and `.env.example` if new vars.
+5. Run Required checks from `project-context` against a non-production DB.
