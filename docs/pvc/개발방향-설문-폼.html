@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>개발 방향 설문 — 작성·내려받기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #5a6678;
+      --line: #d5dbe6;
+      --bg: #f3f6fa;
+      --surface: #ffffff;
+      --accent: #0b6e4f;
+      --accent-soft: #e6f4ef;
+      --warn: #8a4b08;
+      --warn-soft: #fff4e5;
+      --focus: #0b6e4f;
+      --radius: 10px;
+      --shadow: 0 1px 2px rgba(26, 35, 50, 0.06);
+      --font: "IBM Plex Sans KR", "IBM Plex Sans", sans-serif;
+      --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #dfe9f5 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #d9efe6 0%, transparent 50%),
+        var(--bg);
+      line-height: 1.55;
+    }
+
+    a { color: var(--accent); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.25rem 8rem; }
+
+    header.app-head {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+    header.app-head .brand {
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin: 0 0 0.4rem;
+    }
+    header.app-head h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    header.app-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .notice {
+      margin: 1rem 0 0;
+      padding: 0.85rem 1rem;
+      background: var(--accent-soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.92rem;
+    }
+    .notice.warn {
+      background: var(--warn-soft);
+      border-left-color: var(--warn);
+    }
+
+    .mode-bar {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1.25rem 0 1.5rem;
+    }
+    .mode-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .mode-options { grid-template-columns: 1fr; }
+    }
+    .mode-options label {
+      display: block;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .mode-options label:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .mode-options input { position: absolute; opacity: 0; pointer-events: none; }
+    .mode-options strong { display: block; font-size: 0.95rem; }
+    .mode-options span { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+    section.block {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 2px);
+      padding: 1.25rem 1.25rem 1.35rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+    section.block h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    section.block .lead {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    h3 {
+      margin: 1.15rem 0 0.55rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+    h3:first-of-type { margin-top: 0.25rem; }
+
+    label.field {
+      display: block;
+      margin-bottom: 0.85rem;
+    }
+    label.field > span,
+    .field-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .hint {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 0.15rem;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="url"],
+    textarea,
+    select {
+      width: 100%;
+      font: inherit;
+      color: var(--ink);
+      background: #fafbfd;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.55rem 0.7rem;
+    }
+    textarea { min-height: 5rem; resize: vertical; }
+    input:focus, textarea:focus, select:focus, button:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .checks {
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 0.75rem;
+    }
+    .checks label {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      padding: 0.35rem 0.2rem;
+      cursor: pointer;
+      font-size: 0.92rem;
+    }
+    .checks input { margin-top: 0.25rem; flex-shrink: 0; }
+    .inline-extra {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      margin: 0.35rem 0 0.85rem 1.6rem;
+      font-size: 0.86rem;
+    }
+    .inline-extra input[type="text"] { flex: 1; min-width: 12rem; }
+
+    .table-scroll { overflow-x: auto; margin-bottom: 0.75rem; }
+    table.dyn {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      min-width: 520px;
+    }
+    table.dyn th, table.dyn td {
+      border: 1px solid var(--line);
+      padding: 0.35rem;
+      vertical-align: top;
+    }
+    table.dyn th {
+      background: #eef2f7;
+      font-weight: 600;
+      text-align: left;
+    }
+    table.dyn input, table.dyn textarea {
+      border: none;
+      background: transparent;
+      padding: 0.35rem;
+      min-height: 0;
+    }
+    table.dyn textarea { min-height: 2.4rem; }
+
+    .numbered textarea { min-height: 2.6rem; margin-bottom: 0.45rem; }
+
+    .std-only[hidden], .quick-only[hidden] { display: none !important; }
+
+    .toolbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+      padding: 0.75rem 1rem;
+    }
+    .toolbar-inner {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toolbar .status {
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex: 1;
+      min-width: 10rem;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    button {
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      padding: 0.55rem 0.9rem;
+      cursor: pointer;
+    }
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    button.primary:hover { filter: brightness(1.05); }
+    button.secondary {
+      background: var(--surface);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    button.ghost {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--muted);
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .toc a {
+      font-size: 0.78rem;
+      text-decoration: none;
+      padding: 0.25rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+    .toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+    footer.page-foot {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="app-head">
+      <p class="brand">Perfect Vibe Coding</p>
+      <h1>개발 방향 설문</h1>
+      <p>
+        기획 초안을 쉬운 말로 채운 뒤, 답변 파일을 따로 내려받아 Agent·개발자에게 전달하세요.
+        필수 조건은 아니며, 구체적일수록 추측과 재작업이 줄어듭니다.
+      </p>
+      <p class="notice">
+        작성 내용은 이 브라우저에만 임시 저장됩니다. 서버로 전송되지 않습니다.
+        작업이 끝나면 <strong>Markdown 내려받기</strong>로 파일을 보관하세요.
+      </p>
+    </header>
+
+    <div class="mode-bar" role="group" aria-labelledby="mode-label">
+      <div id="mode-label" class="field-label">작성 모드</div>
+      <div class="mode-options">
+        <label>
+          <input type="radio" name="mode" value="quick" checked />
+          <strong>Quick</strong>
+          <span>실험·프로토타입 · 4문항</span>
+        </label>
+        <label>
+          <input type="radio" name="mode" value="standard" />
+          <strong>Standard</strong>
+          <span>MVP·실서비스 · 전체(0~11)</span>
+        </label>
+        <label>
+          <input type="radio" name="mode" value="high" />
+          <strong>High Risk</strong>
+          <span>로그인·결제·민감정보 등</span>
+        </label>
+      </div>
+      <p id="high-notice" class="notice warn" hidden>
+        High Risk 모드입니다. 설문 전체 작성 후 Feature Brief와 작업 전 승인을 권장합니다.
+      </p>
+    </div>
+
+    <nav class="toc std-only" id="toc" aria-label="장 바로가기" hidden>
+      <a href="#s0">0 메타</a>
+      <a href="#s1">1 제품</a>
+      <a href="#s2">2 사용자</a>
+      <a href="#s3">3 MVP</a>
+      <a href="#s4">4 나중</a>
+      <a href="#s5">5 보안</a>
+      <a href="#s6">6 디자인</a>
+      <a href="#s7">7 데이터</a>
+      <a href="#s8">8 Non-goals</a>
+      <a href="#s9">9 기술</a>
+      <a href="#s10">10 우선순위</a>
+      <a href="#s11">11 메모</a>
+      <a href="#s12">12 체크</a>
+    </nav>
+
+    <form id="survey" novalidate>
+      <!-- Quick -->
+      <section class="block quick-only" id="quick" aria-labelledby="quick-h">
+        <h2 id="quick-h">Quick 4문항</h2>
+        <p class="lead">빠른 시작용입니다. 끝나면 Markdown을 내려받아 Agent에게 전달하세요.</p>
+        <label class="field">
+          <span>Q1. 무엇을 만드나요? (한 문장)</span>
+          <textarea name="q1" rows="2" placeholder="예: 동네 미용실 손님이 스마트폰으로 예약을 잡는 웹앱"></textarea>
+        </label>
+        <label class="field">
+          <span>Q2. 누가 쓰나요?</span>
+          <textarea name="q2" rows="2" placeholder="예: 손님과 사장님"></textarea>
+        </label>
+        <label class="field">
+          <span>Q3. 형태는?</span>
+          <textarea name="q3" rows="2" placeholder="웹 / 모바일웹 / 앱 / 랜딩 / 관리자 / 기타"></textarea>
+        </label>
+        <label class="field">
+          <span>Q4. 이번에 하지 말 것·절대 금지 <span class="hint">없으면 `없음`</span></span>
+          <textarea name="q4" rows="2" placeholder="없음"></textarea>
+        </label>
+      </section>
+
+      <!-- 0 Meta -->
+      <section class="block std-only" id="s0" hidden>
+        <h2>0. 설문 메타</h2>
+        <label class="field"><span>작성일</span><input type="date" name="meta_date" /></label>
+        <label class="field"><span>작성자 이름/역할</span><input type="text" name="meta_author" placeholder="예: 대표, 기획, 의뢰인" /></label>
+        <label class="field"><span>프로젝트 가칭</span><input type="text" name="meta_name" /></label>
+        <fieldset class="checks" style="border:0;padding:0;margin:0 0 0.75rem">
+          <legend class="field-label">이미 코드/디자인이 있나요?</legend>
+          <label><input type="radio" name="meta_existing" value="없음" /> 없음</label>
+          <label><input type="radio" name="meta_existing" value="일부 있음" /> 일부 있음</label>
+          <label><input type="radio" name="meta_existing" value="거의 완성" /> 거의 완성</label>
+        </fieldset>
+        <label class="field"><span>위 선택에 대한 설명</span><input type="text" name="meta_existing_note" /></label>
+        <label class="field"><span>희망 일정</span><input type="text" name="meta_schedule" placeholder="예: 2주 안에 데모, 여유 있음" /></label>
+        <label class="field"><span>예산·인원 제약</span><input type="text" name="meta_budget" /></label>
+      </section>
+
+      <!-- 1 Product -->
+      <section class="block std-only" id="s1" hidden>
+        <h2>1. 무엇을 만드나요?</h2>
+        <h3>1-1. 한 문장으로</h3>
+        <p class="lead">이 제품은 [누가]를 위해 [어떤 문제]를 [어떻게] 해결한다.</p>
+        <label class="field"><span>답변</span><textarea name="p11"></textarea></label>
+
+        <h3>1-2. 형태</h3>
+        <div class="checks" data-group="p12">
+          <label><input type="checkbox" name="p12" value="웹사이트 (브라우저에서 접속)" /> 웹사이트 (브라우저에서 접속)</label>
+          <label><input type="checkbox" name="p12" value="모바일 웹 (폰 브라우저)" /> 모바일 웹 (폰 브라우저)</label>
+          <label><input type="checkbox" name="p12" value="스마트폰 앱 (설치형)" /> 스마트폰 앱 (설치형)</label>
+          <label><input type="checkbox" name="p12" value="관리자(어드민) 화면" /> 관리자(어드민) 화면</label>
+          <label><input type="checkbox" name="p12" value="랜딩(홍보) 페이지만" /> 랜딩(홍보) 페이지만</label>
+          <label><input type="checkbox" name="p12" value="내부 업무 도구 (직원만)" /> 내부 업무 도구 (직원만)</label>
+          <label><input type="checkbox" name="p12" value="기타" data-extra="p12_other" /> 기타</label>
+        </div>
+        <div class="inline-extra"><span>기타:</span><input type="text" name="p12_other" /></div>
+
+        <h3>1-3. 비슷한 서비스</h3>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="2" id="tbl-refs">
+            <thead><tr><th>참고 서비스</th><th>닮았으면 하는 점</th><th>절대 닮지 말 점</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3>1-4. 성공 기준</h3>
+        <label class="field">
+          <span>답변 <span class="hint">예: 예약 전화가 주 10통 → 앱 예약 50건</span></span>
+          <textarea name="p14"></textarea>
+        </label>
+      </section>
+
+      <!-- 2 Users -->
+      <section class="block std-only" id="s2" hidden>
+        <h2>2. 누가 쓰나요?</h2>
+        <h3>2-1. 주요 사용자</h3>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="3" id="tbl-users">
+            <thead><tr><th>역할</th><th>대략 나이·상황</th><th>자주 쓰는 기기</th><th>핵심 행동</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3>2-2. 사용 환경</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p22" value="집·카페 Wi-Fi 위주" /> 집·카페 Wi-Fi 위주</label>
+          <label><input type="checkbox" name="p22" value="이동 중 모바일 데이터" /> 이동 중 모바일 데이터</label>
+          <label><input type="checkbox" name="p22" value="회사 PC" /> 회사 PC</label>
+          <label><input type="checkbox" name="p22" value="매장 태블릿/키오스크" /> 매장 태블릿/키오스크</label>
+          <label><input type="checkbox" name="p22" value="기타" data-extra="p22_other" /> 기타</label>
+        </div>
+        <div class="inline-extra"><span>기타:</span><input type="text" name="p22_other" /></div>
+
+        <h3>2-3. 언어</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p23" value="한국어만" /> 한국어만</label>
+          <label><input type="checkbox" name="p23" value="한국어 + 영어" /> 한국어 + 영어</label>
+          <label><input type="checkbox" name="p23" value="그 외" data-extra="p23_other" /> 그 외</label>
+        </div>
+        <div class="inline-extra"><span>그 외:</span><input type="text" name="p23_other" /></div>
+        <label class="field"><span>전문 용어·사투리·브랜드 고유 명칭</span><textarea name="p23_terms" rows="2"></textarea></label>
+      </section>
+
+      <!-- 3 MVP -->
+      <section class="block std-only" id="s3" hidden>
+        <h2>3. 첫 버전(MVP)에 꼭 넣을 것</h2>
+        <p class="lead">없으면 제품이 아닌 것만. “나중에 있으면 좋은 것”은 4장으로.</p>
+        <h3>3-1. 필수 기능 (최소 3개)</h3>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="5" id="tbl-mvp">
+            <thead><tr><th>#</th><th>기능 이름</th><th>누가 쓰나</th><th>성공 화면/결과</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <h3>3-2. 첫 여정</h3>
+        <div class="numbered">
+          <textarea name="p32_1" placeholder="1."></textarea>
+          <textarea name="p32_2" placeholder="2."></textarea>
+          <textarea name="p32_3" placeholder="3."></textarea>
+          <textarea name="p32_4" placeholder="4."></textarea>
+          <textarea name="p32_5" placeholder="5."></textarea>
+        </div>
+        <h3>3-3. 꼭 있어야 하는 화면</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p33" value="홈/소개" /> 홈/소개</label>
+          <label><input type="checkbox" name="p33" value="회원가입·로그인" /> 회원가입·로그인</label>
+          <label><input type="checkbox" name="p33" value="목록(리스트)" /> 목록(리스트)</label>
+          <label><input type="checkbox" name="p33" value="상세" /> 상세</label>
+          <label><input type="checkbox" name="p33" value="작성·수정 폼" /> 작성·수정 폼</label>
+          <label><input type="checkbox" name="p33" value="검색·필터" /> 검색·필터</label>
+          <label><input type="checkbox" name="p33" value="결제" /> 결제</label>
+          <label><input type="checkbox" name="p33" value="마이페이지" /> 마이페이지</label>
+          <label><input type="checkbox" name="p33" value="알림" /> 알림</label>
+          <label><input type="checkbox" name="p33" value="관리자 대시보드" /> 관리자 대시보드</label>
+          <label><input type="checkbox" name="p33" value="기타" data-extra="p33_other" /> 기타</label>
+        </div>
+        <div class="inline-extra"><span>기타:</span><input type="text" name="p33_other" /></div>
+        <h3>3-4. 반드시 동작해야 하는 시나리오</h3>
+        <div class="numbered">
+          <textarea name="p34_1" placeholder="1."></textarea>
+          <textarea name="p34_2" placeholder="2."></textarea>
+          <textarea name="p34_3" placeholder="3."></textarea>
+        </div>
+      </section>
+
+      <!-- 4 Later -->
+      <section class="block std-only" id="s4" hidden>
+        <h2>4. 나중(2차 이후)에 할 것</h2>
+        <p class="lead">적어 두면 AI가 몰래 넣지 않습니다.</p>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="3" id="tbl-later">
+            <thead><tr><th>나중 기능</th><th>왜 나중인가</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5 Security -->
+      <section class="block std-only" id="s5" hidden>
+        <h2>5. 계정·보안·개인정보</h2>
+        <h3>5-1. 로그인</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p51" value="로그인 없음 (모두 공개)" /> 로그인 없음 (모두 공개)</label>
+          <label><input type="checkbox" name="p51" value="이메일+비밀번호" /> 이메일+비밀번호</label>
+          <label><input type="checkbox" name="p51" value="소셜 로그인" data-extra="p51_social" /> 소셜 로그인 (카카오/네이버/구글/애플 등)</label>
+          <label><input type="checkbox" name="p51" value="관리자만 로그인, 일반은 없음" /> 관리자만 로그인, 일반은 없음</label>
+          <label><input type="checkbox" name="p51" value="모름 / 추천 부탁" /> 모름 / 추천 부탁</label>
+        </div>
+        <div class="inline-extra"><span>원하는 소셜:</span><input type="text" name="p51_social" /></div>
+
+        <h3>5-2. 다루는 정보</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p52" value="이름·연락처" /> 이름·연락처</label>
+          <label><input type="checkbox" name="p52" value="주소" /> 주소</label>
+          <label><input type="checkbox" name="p52" value="결제·카드" /> 결제·카드</label>
+          <label><input type="checkbox" name="p52" value="주민/신분 관련" /> 주민/신분 관련</label>
+          <label><input type="checkbox" name="p52" value="건강·진료" /> 건강·진료</label>
+          <label><input type="checkbox" name="p52" value="회사 내부 기밀" /> 회사 내부 기밀</label>
+          <label><input type="checkbox" name="p52" value="위치 정보" /> 위치 정보</label>
+          <label><input type="checkbox" name="p52" value="파일 업로드(사진·문서)" /> 파일 업로드(사진·문서)</label>
+          <label><input type="checkbox" name="p52" value="없음 / 잘 모름" /> 없음 / 잘 모름</label>
+        </div>
+        <label class="field"><span>민감 정보 제약 (저장·열람 금지 등)</span><textarea name="p52_note"></textarea></label>
+
+        <h3>5-3. 권한</h3>
+        <label class="field">
+          <span>답변 <span class="hint">예: 손님은 자기 예약만, 사장님은 전체</span></span>
+          <textarea name="p53"></textarea>
+        </label>
+      </section>
+
+      <!-- 6 Design -->
+      <section class="block std-only" id="s6" hidden>
+        <h2>6. 디자인·분위기</h2>
+        <h3>6-1. 느낌</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p61" value="신뢰·차분 (병원·관공서·금융 느낌)" /> 신뢰·차분</label>
+          <label><input type="checkbox" name="p61" value="밝고 캐주얼" /> 밝고 캐주얼</label>
+          <label><input type="checkbox" name="p61" value="고급·미니멀" /> 고급·미니멀</label>
+          <label><input type="checkbox" name="p61" value="활동적·마케팅 강함" /> 활동적·마케팅 강함</label>
+          <label><input type="checkbox" name="p61" value="기존 브랜드 가이드 있음" data-extra="p61_brand" /> 기존 브랜드 가이드 있음</label>
+          <label><input type="checkbox" name="p61" value="모름 — 레퍼런스 보고 제안 부탁" /> 모름 — 제안 부탁</label>
+        </div>
+        <div class="inline-extra"><span>가이드 파일/링크:</span><input type="text" name="p61_brand" /></div>
+
+        <h3>6-2. 참고 화면</h3>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="2" id="tbl-design">
+            <thead><tr><th>URL</th><th>좋은 점</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3>6-3. 피하고 싶은 것</h3>
+        <label class="field"><span>답변</span><textarea name="p63"></textarea></label>
+
+        <h3>6-4. 로고·이미지</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p64" value="로고 파일 있음" /> 로고 파일 있음</label>
+          <label><input type="checkbox" name="p64" value="아직 없음 — 텍스트 로고로 임시" /> 아직 없음 — 텍스트 로고로 임시</label>
+          <label><input type="checkbox" name="p64" value="사진/일러스트 제공 예정" /> 사진/일러스트 제공 예정</label>
+          <label><input type="checkbox" name="p64" value="AI가 플레이스홀더만" /> AI가 플레이스홀더만</label>
+        </div>
+
+        <h3>6-5. 접근성·공공성</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p65" value="일반 서비스 수준이면 됨" /> 일반 서비스 수준이면 됨</label>
+          <label><input type="checkbox" name="p65" value="고령·장애인 배려가 중요" /> 고령·장애인 배려가 중요</label>
+          <label><input type="checkbox" name="p65" value="공공·관공서 느낌의 명확한 안내가 중요 (KRDS 등 참고 가능)" /> 공공·관공서 느낌의 명확한 안내</label>
+          <label><input type="checkbox" name="p65" value="모름" /> 모름</label>
+        </div>
+      </section>
+
+      <!-- 7 Data -->
+      <section class="block std-only" id="s7" hidden>
+        <h2>7. 데이터·연동·운영</h2>
+        <h3>7-1. 저장해야 하는 정보</h3>
+        <label class="field"><span>답변 <span class="hint">예: 회원, 예약 일시, 메뉴, 리뷰</span></span><textarea name="p71"></textarea></label>
+
+        <h3>7-2. 외부 연동</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p72" value="문자/알림톡" /> 문자/알림톡</label>
+          <label><input type="checkbox" name="p72" value="이메일" /> 이메일</label>
+          <label><input type="checkbox" name="p72" value="결제(카드·간편결제)" /> 결제(카드·간편결제)</label>
+          <label><input type="checkbox" name="p72" value="지도/주소 검색" /> 지도/주소 검색</label>
+          <label><input type="checkbox" name="p72" value="캘린더" /> 캘린더</label>
+          <label><input type="checkbox" name="p72" value="엑셀 가져오기·내보내기" /> 엑셀 가져오기·내보내기</label>
+          <label><input type="checkbox" name="p72" value="기타" data-extra="p72_other" /> 기타</label>
+          <label><input type="checkbox" name="p72" value="없음 / 모름" /> 없음 / 모름</label>
+        </div>
+        <div class="inline-extra"><span>기타:</span><input type="text" name="p72_other" /></div>
+
+        <h3>7-3. 배포·접속 주소</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p73" value="아직 없음 — 나중에" /> 아직 없음 — 나중에</label>
+          <label><input type="checkbox" name="p73" value="원하는 도메인" data-extra="p73_domain" /> 원하는 도메인</label>
+          <label><input type="checkbox" name="p73" value="사내 서버 / 특정 호스팅 지정" data-extra="p73_host" /> 사내 서버 / 특정 호스팅</label>
+          <label><input type="checkbox" name="p73" value="모름 — 추천 부탁" /> 모름 — 추천 부탁</label>
+        </div>
+        <div class="inline-extra"><span>도메인:</span><input type="text" name="p73_domain" /></div>
+        <div class="inline-extra"><span>호스팅:</span><input type="text" name="p73_host" /></div>
+
+        <h3>7-4. 운영 중 절대 하면 안 되는 것</h3>
+        <label class="field"><span>답변</span><textarea name="p74"></textarea></label>
+      </section>
+
+      <!-- 8 Non-goals -->
+      <section class="block std-only" id="s8" hidden>
+        <h2>8. 하지 말 것 (Non-goals)</h2>
+        <p class="lead">AI가 “친절하게” 추가하는 것을 미리 막습니다.</p>
+        <div class="table-scroll">
+          <table class="dyn" data-rows="3" id="tbl-nongoals">
+            <thead><tr><th>이번에 하지 말 것</th><th>이유</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 9 Tech -->
+      <section class="block std-only" id="s9" hidden>
+        <h2>9. 기술·개발 방식</h2>
+        <h3>9-1. 기술 선호</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p91" value="없음 — PVC 기본 예시/추천을 따름" /> 없음 — PVC 추천을 따름</label>
+          <label><input type="checkbox" name="p91" value="있음 — 아래 적기" /> 있음 — 아래 적기</label>
+        </div>
+        <label class="field"><span>이미 정한 것</span><textarea name="p91_detail" rows="2"></textarea></label>
+
+        <h3>9-2. 기존 코드</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p92" value="완전 신규" /> 완전 신규</label>
+          <label><input type="checkbox" name="p92" value="일부 있음" data-extra="p92_path" /> 일부 있음</label>
+          <label><input type="checkbox" name="p92" value="디자인만 있음" data-extra="p92_design" /> 디자인만 있음</label>
+        </div>
+        <div class="inline-extra"><span>경로/저장소:</span><input type="text" name="p92_path" /></div>
+        <div class="inline-extra"><span>Figma 등:</span><input type="text" name="p92_design" /></div>
+
+        <h3>9-3. 품질 기대</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p93" value="데모·설득용 (빠르면 됨, 나중에 정리)" /> 데모·설득용</label>
+          <label><input type="checkbox" name="p93" value="실제 고객이 쓰는 MVP (안전·기본 품질 중요)" /> 실제 고객이 쓰는 MVP</label>
+          <label><input type="checkbox" name="p93" value="오래 운영할 제품 (문서·테스트·보안 더 엄격)" /> 오래 운영할 제품</label>
+        </div>
+
+        <h3>9-4. Agent에게 바라는 말투·보고</h3>
+        <div class="checks">
+          <label><input type="checkbox" name="p94" value="쉬운 한글 설명 위주" /> 쉬운 한글 설명 위주</label>
+          <label><input type="checkbox" name="p94" value="변경 전에 항상 짧게 계획 보고" /> 변경 전에 항상 짧게 계획 보고</label>
+          <label><input type="checkbox" name="p94" value="작은 수정은 바로, 큰 것만 보고" /> 작은 수정은 바로, 큰 것만 보고</label>
+          <label><input type="checkbox" name="p94" value="기타" data-extra="p94_other" /> 기타</label>
+        </div>
+        <div class="inline-extra"><span>기타:</span><input type="text" name="p94_other" /></div>
+      </section>
+
+      <!-- 10 Priority -->
+      <section class="block std-only" id="s10" hidden>
+        <h2>10. 우선순위와 결정 규칙</h2>
+        <h3>10-1. 기간 안에 하나만 고른다면</h3>
+        <label class="field"><span>1순위</span><input type="text" name="p101_1" /></label>
+        <label class="field"><span>2순위</span><input type="text" name="p101_2" /></label>
+        <label class="field"><span>3순위</span><input type="text" name="p101_3" /></label>
+        <h3>10-2. 의견이 갈리면 누가 결정하나요?</h3>
+        <label class="field"><span>답변</span><textarea name="p102" rows="2"></textarea></label>
+        <h3>10-3. 매일/매주 확인하면 좋은 결과물</h3>
+        <label class="field"><span>답변</span><textarea name="p103" rows="2"></textarea></label>
+      </section>
+
+      <!-- 11 Memo -->
+      <section class="block std-only" id="s11" hidden>
+        <h2>11. 자유 메모</h2>
+        <label class="field"><span>빼먹기 싫은 말, 사연, 경쟁 상황, 법적 제약 등</span><textarea name="p11_memo" rows="6"></textarea></label>
+      </section>
+
+      <!-- 12 Checklist -->
+      <section class="block std-only" id="s12" hidden>
+        <h2>12. 작성 체크리스트</h2>
+        <div class="checks">
+          <label><input type="checkbox" name="p12c" value="Quick 4문항 또는 Standard 해당 장을 채웠다" /> Quick 4문항 또는 Standard 해당 장을 채웠다</label>
+          <label><input type="checkbox" name="p12c" value="MVP와 “나중”을 섞지 않았다" /> MVP와 “나중”을 섞지 않았다</label>
+          <label><input type="checkbox" name="p12c" value="로그인·개인정보 관련을 다루면 5장을 적었다" /> 로그인·개인정보 관련을 다루면 5장을 적었다</label>
+          <label><input type="checkbox" name="p12c" value="Non-goals 또는 Quick Q4를 적었다" /> Non-goals 또는 Quick Q4를 적었다</label>
+          <label><input type="checkbox" name="p12c" value="모름인 항목에 “추천 부탁”을 명시했다" /> `모름`인 항목에 “추천 부탁”을 명시했다</label>
+          <label><input type="checkbox" name="p12c" value="답변 파일을 저장했거나 Agent 채팅에 첨부했다" /> 답변 파일을 저장했거나 Agent 채팅에 첨부했다</label>
+        </div>
+      </section>
+    </form>
+
+    <footer class="page-foot">
+      원문: <a href="./개발방향-설문.md">개발방향-설문.md</a> ·
+      내려받은 파일을 Agent에게 첨부한 뒤
+      <code style="font-family:var(--mono);font-size:0.85em">project-context.mdc</code> 반영을 요청하세요.
+    </footer>
+  </div>
+
+  <div class="toolbar" role="region" aria-label="저장 및 내려받기">
+    <div class="toolbar-inner">
+      <div class="status" id="save-status" aria-live="polite">자동 저장 대기</div>
+      <div class="actions">
+        <button type="button" class="ghost" id="btn-clear">초기화</button>
+        <button type="button" class="secondary" id="btn-json">JSON 내려받기</button>
+        <button type="button" class="primary" id="btn-md">Markdown 내려받기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = "pvc-dev-survey-v1";
+      const form = document.getElementById("survey");
+      const statusEl = document.getElementById("save-status");
+      const highNotice = document.getElementById("high-notice");
+      const toc = document.getElementById("toc");
+
+      const TABLE_SPECS = {
+        "tbl-refs": { cols: 3, names: ["ref_name", "ref_like", "ref_unlike"] },
+        "tbl-users": { cols: 4, names: ["u_role", "u_age", "u_device", "u_action"] },
+        "tbl-mvp": { cols: 4, names: ["mvp_n", "mvp_name", "mvp_who", "mvp_result"], numbered: true },
+        "tbl-later": { cols: 2, names: ["later_what", "later_why"] },
+        "tbl-design": { cols: 2, names: ["des_url", "des_good"] },
+        "tbl-nongoals": { cols: 2, names: ["ng_what", "ng_why"] },
+      };
+
+      function initTables() {
+        Object.entries(TABLE_SPECS).forEach(([id, spec]) => {
+          const table = document.getElementById(id);
+          if (!table) return;
+          const tbody = table.querySelector("tbody");
+          const rows = Number(table.dataset.rows || 2);
+          tbody.innerHTML = "";
+          for (let r = 0; r < rows; r++) {
+            const tr = document.createElement("tr");
+            for (let c = 0; c < spec.cols; c++) {
+              const td = document.createElement("td");
+              if (spec.numbered && c === 0) {
+                td.textContent = String(r + 1);
+                const hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.name = spec.names[c] + "_" + r;
+                hidden.value = String(r + 1);
+                td.appendChild(hidden);
+              } else {
+                const input = document.createElement(c > 0 || spec.cols > 2 ? "textarea" : "input");
+                if (input.tagName === "INPUT") input.type = "text";
+                input.name = spec.names[c] + "_" + r;
+                input.rows = 1;
+                td.appendChild(input);
+              }
+              tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+          }
+        });
+      }
+
+      function getMode() {
+        const el = document.querySelector('input[name="mode"]:checked');
+        return el ? el.value : "quick";
+      }
+
+      function applyMode() {
+        const mode = getMode();
+        const isQuick = mode === "quick";
+        document.querySelectorAll(".quick-only").forEach((el) => {
+          el.hidden = !isQuick;
+        });
+        document.querySelectorAll(".std-only").forEach((el) => {
+          el.hidden = isQuick;
+        });
+        highNotice.hidden = mode !== "high";
+        if (toc) toc.hidden = isQuick;
+        saveSoon();
+      }
+
+      function val(name) {
+        const el = form.elements.namedItem(name);
+        if (!el) return "";
+        if (el instanceof RadioNodeList) {
+          const checked = [...el].find((x) => x.checked);
+          return checked ? checked.value : "";
+        }
+        return (el.value || "").trim();
+      }
+
+      function checks(name) {
+        return [...form.querySelectorAll('input[type="checkbox"][name="' + name + '"]')]
+          .filter((c) => c.checked)
+          .map((c) => c.value);
+      }
+
+      function checkedLine(label, selected, extraName) {
+        const on = selected.includes(label) || (extraName && selected.some((s) => s.startsWith(label)));
+        const mark = on ? "x" : " ";
+        let line = "- [" + mark + "] " + label;
+        if (extraName && on) {
+          const extra = val(extraName);
+          if (extra) line += " — " + extra;
+        }
+        return line;
+      }
+
+      function tableRows(names, count) {
+        const rows = [];
+        for (let i = 0; i < count; i++) {
+          const cells = names.map((n) => val(n + "_" + i));
+          if (cells.some((c) => c)) rows.push(cells);
+        }
+        return rows;
+      }
+
+      function mdEscapeCell(s) {
+        return String(s || "").replace(/\|/g, "\\|").replace(/\n/g, " ");
+      }
+
+      function mdTable(headers, rows) {
+        const head = "| " + headers.join(" | ") + " |";
+        const sep = "| " + headers.map(() => "---").join(" | ") + " |";
+        const body = (rows.length ? rows : [headers.map(() => "")]).map(
+          (r) => "| " + r.map(mdEscapeCell).join(" | ") + " |"
+        );
+        return [head, sep, ...body].join("\n");
+      }
+
+      function collect() {
+        const mode = getMode();
+        return {
+          mode,
+          exportedAt: new Date().toISOString(),
+          quick: {
+            q1: val("q1"),
+            q2: val("q2"),
+            q3: val("q3"),
+            q4: val("q4"),
+          },
+          meta: {
+            date: val("meta_date"),
+            author: val("meta_author"),
+            name: val("meta_name"),
+            existing: val("meta_existing"),
+            existingNote: val("meta_existing_note"),
+            schedule: val("meta_schedule"),
+            budget: val("meta_budget"),
+          },
+          product: {
+            oneLiner: val("p11"),
+            forms: checks("p12"),
+            formsOther: val("p12_other"),
+            refs: tableRows(["ref_name", "ref_like", "ref_unlike"], 2),
+            success: val("p14"),
+          },
+          users: {
+            roles: tableRows(["u_role", "u_age", "u_device", "u_action"], 3),
+            env: checks("p22"),
+            envOther: val("p22_other"),
+            lang: checks("p23"),
+            langOther: val("p23_other"),
+            terms: val("p23_terms"),
+          },
+          mvp: {
+            features: tableRows(["mvp_n", "mvp_name", "mvp_who", "mvp_result"], 5),
+            journey: [1, 2, 3, 4, 5].map((n) => val("p32_" + n)),
+            screens: checks("p33"),
+            screensOther: val("p33_other"),
+            scenarios: [1, 2, 3].map((n) => val("p34_" + n)),
+          },
+          later: tableRows(["later_what", "later_why"], 3),
+          security: {
+            login: checks("p51"),
+            social: val("p51_social"),
+            data: checks("p52"),
+            dataNote: val("p52_note"),
+            roles: val("p53"),
+          },
+          design: {
+            feel: checks("p61"),
+            brand: val("p61_brand"),
+            refs: tableRows(["des_url", "des_good"], 2),
+            avoid: val("p63"),
+            logo: checks("p64"),
+            a11y: checks("p65"),
+          },
+          ops: {
+            store: val("p71"),
+            integrations: checks("p72"),
+            integrationsOther: val("p72_other"),
+            deploy: checks("p73"),
+            domain: val("p73_domain"),
+            host: val("p73_host"),
+            never: val("p74"),
+          },
+          nongoals: tableRows(["ng_what", "ng_why"], 3),
+          tech: {
+            prefer: checks("p91"),
+            preferDetail: val("p91_detail"),
+            existing: checks("p92"),
+            path: val("p92_path"),
+            design: val("p92_design"),
+            quality: checks("p93"),
+            agent: checks("p94"),
+            agentOther: val("p94_other"),
+          },
+          priority: {
+            r1: val("p101_1"),
+            r2: val("p101_2"),
+            r3: val("p101_3"),
+            decision: val("p102"),
+            cadence: val("p103"),
+          },
+          memo: val("p11_memo"),
+          checklist: checks("p12c"),
+        };
+      }
+
+      function cb(list, label, selected, extra) {
+        const hit = selected.includes(label);
+        let t = "- [" + (hit ? "x" : " ") + "] " + label;
+        if (hit && extra) t += (extra.startsWith(" —") ? extra : " — " + extra);
+        return t;
+      }
+
+      function buildMarkdown(data) {
+        const lines = [];
+        const modeLabel = { quick: "Quick", standard: "Standard", high: "High Risk" }[data.mode] || data.mode;
+
+        lines.push("# 개발 방향 설문 — 답변");
+        lines.push("");
+        lines.push("> 모드: **" + modeLabel + "** · 내보내기: `" + data.exportedAt + "`");
+        lines.push("> 원문: `docs/pvc/개발방향-설문.md` · 작성 폼에서 생성");
+        lines.push("");
+
+        if (data.mode === "quick") {
+          lines.push("## Quick 4문항");
+          lines.push("");
+          lines.push(mdTable(["#", "질문", "답변"], [
+            ["Q1", "무엇을 만드나요? (한 문장)", data.quick.q1],
+            ["Q2", "누가 쓰나요?", data.quick.q2],
+            ["Q3", "형태는?", data.quick.q3],
+            ["Q4", "이번에 하지 말 것·절대 금지", data.quick.q4 || "없음"],
+          ]));
+          lines.push("");
+          lines.push("### Agent에게 전달용");
+          lines.push("");
+          lines.push("```text");
+          lines.push("Quick 설문 답변을 project-context에 반영해 줘.");
+          lines.push("큰 구현 전에 짧은 계획만 먼저 보여 줘.");
+          lines.push("```");
+          lines.push("");
+          return lines.join("\n");
+        }
+
+        const existing = [data.meta.existing, data.meta.existingNote].filter(Boolean).join(" — 설명: ");
+
+        lines.push("## 0. 설문 메타");
+        lines.push("");
+        lines.push(mdTable(["질문", "답변"], [
+          ["작성일", data.meta.date || "YYYY-MM-DD"],
+          ["작성자 이름/역할", data.meta.author],
+          ["프로젝트 가칭", data.meta.name],
+          ["이미 코드/디자인이 있나요?", existing],
+          ["희망 일정", data.meta.schedule],
+          ["예산·인원 제약", data.meta.budget],
+        ]));
+        lines.push("");
+
+        lines.push("## 1. 무엇을 만드나요? (제품 정의)");
+        lines.push("");
+        lines.push("### 1-1. 한 문장으로");
+        lines.push("");
+        lines.push(data.product.oneLiner || "(미작성)");
+        lines.push("");
+        lines.push("### 1-2. 형태");
+        lines.push("");
+        [
+          "웹사이트 (브라우저에서 접속)",
+          "모바일 웹 (폰 브라우저)",
+          "스마트폰 앱 (설치형)",
+          "관리자(어드민) 화면",
+          "랜딩(홍보) 페이지만",
+          "내부 업무 도구 (직원만)",
+        ].forEach((l) => lines.push(cb(null, l, data.product.forms)));
+        lines.push(cb(null, "기타", data.product.forms.includes("기타") ? ["기타"] : [], data.product.formsOther));
+        lines.push("");
+        lines.push("### 1-3. 비슷한 서비스");
+        lines.push("");
+        lines.push(mdTable(["참고 서비스", "닮았으면 하는 점", "절대 닮지 말 점"], data.product.refs));
+        lines.push("");
+        lines.push("### 1-4. 성공 기준");
+        lines.push("");
+        lines.push(data.product.success || "(미작성)");
+        lines.push("");
+
+        lines.push("## 2. 누가 쓰나요? (사용자)");
+        lines.push("");
+        lines.push("### 2-1. 주요 사용자");
+        lines.push("");
+        lines.push(mdTable(["역할", "대략 나이·상황", "자주 쓰는 기기", "핵심 행동"], data.users.roles));
+        lines.push("");
+        lines.push("### 2-2. 사용 환경");
+        lines.push("");
+        ["집·카페 Wi-Fi 위주", "이동 중 모바일 데이터", "회사 PC", "매장 태블릿/키오스크"].forEach((l) =>
+          lines.push(cb(null, l, data.users.env))
+        );
+        lines.push(cb(null, "기타", data.users.env.includes("기타") ? ["기타"] : [], data.users.envOther));
+        lines.push("");
+        lines.push("### 2-3. 언어");
+        lines.push("");
+        ["한국어만", "한국어 + 영어"].forEach((l) => lines.push(cb(null, l, data.users.lang)));
+        lines.push(cb(null, "그 외", data.users.lang.includes("그 외") ? ["그 외"] : [], data.users.langOther));
+        lines.push("- 전문 용어·사투리·브랜드 고유 명칭: " + (data.users.terms || ""));
+        lines.push("");
+
+        lines.push("## 3. 첫 버전(MVP)에 꼭 넣을 것");
+        lines.push("");
+        lines.push("### 3-1. 필수 기능");
+        lines.push("");
+        lines.push(mdTable(["번호", "기능 이름", "누가 쓰나", "성공 화면/결과"], data.mvp.features));
+        lines.push("");
+        lines.push("### 3-2. 첫 여정");
+        lines.push("");
+        data.mvp.journey.forEach((j, i) => lines.push((i + 1) + ". " + (j || "")));
+        lines.push("");
+        lines.push("### 3-3. 꼭 있어야 하는 화면");
+        lines.push("");
+        [
+          "홈/소개", "회원가입·로그인", "목록(리스트)", "상세", "작성·수정 폼",
+          "검색·필터", "결제", "마이페이지", "알림", "관리자 대시보드",
+        ].forEach((l) => lines.push(cb(null, l, data.mvp.screens)));
+        lines.push(cb(null, "기타", data.mvp.screens.includes("기타") ? ["기타"] : [], data.mvp.screensOther));
+        lines.push("");
+        lines.push("### 3-4. 반드시 동작해야 하는 시나리오");
+        lines.push("");
+        data.mvp.scenarios.forEach((s, i) => lines.push((i + 1) + ". " + (s || "")));
+        lines.push("");
+
+        lines.push("## 4. 나중(2차 이후)에 할 것");
+        lines.push("");
+        lines.push(mdTable(["나중 기능", "왜 나중인가"], data.later));
+        lines.push("");
+
+        lines.push("## 5. 계정·보안·개인정보");
+        lines.push("");
+        lines.push("### 5-1. 로그인");
+        lines.push("");
+        lines.push(cb(null, "로그인 없음 (모두 공개)", data.security.login));
+        lines.push(cb(null, "이메일+비밀번호", data.security.login));
+        {
+          const on = data.security.login.includes("소셜 로그인");
+          lines.push("- [" + (on ? "x" : " ") + "] 소셜 로그인 (카카오/네이버/구글/애플 등)" + (on && data.security.social ? " — 원하는 것: " + data.security.social : ""));
+        }
+        lines.push(cb(null, "관리자만 로그인, 일반은 없음", data.security.login));
+        lines.push(cb(null, "모름 / 추천 부탁", data.security.login));
+        lines.push("");
+        lines.push("### 5-2. 다루는 정보");
+        lines.push("");
+        [
+          "이름·연락처", "주소", "결제·카드", "주민/신분 관련", "건강·진료",
+          "회사 내부 기밀", "위치 정보", "파일 업로드(사진·문서)", "없음 / 잘 모름",
+        ].forEach((l) => lines.push(cb(null, l, data.security.data)));
+        lines.push("");
+        lines.push("민감 정보 제약: " + (data.security.dataNote || ""));
+        lines.push("");
+        lines.push("### 5-3. 권한");
+        lines.push("");
+        lines.push(data.security.roles || "(미작성)");
+        lines.push("");
+
+        lines.push("## 6. 디자인·분위기");
+        lines.push("");
+        lines.push("### 6-1. 느낌");
+        lines.push("");
+        [
+          "신뢰·차분 (병원·관공서·금융 느낌)",
+          "밝고 캐주얼",
+          "고급·미니멀",
+          "활동적·마케팅 강함",
+          "기존 브랜드 가이드 있음",
+          "모름 — 레퍼런스 보고 제안 부탁",
+        ].forEach((l) => {
+          if (l === "기존 브랜드 가이드 있음") {
+            const on = data.design.feel.includes(l);
+            lines.push("- [" + (on ? "x" : " ") + "] " + l + (on && data.design.brand ? " (파일/링크: " + data.design.brand + ")" : ""));
+          } else {
+            lines.push(cb(null, l, data.design.feel));
+          }
+        });
+        lines.push("");
+        lines.push("### 6-2. 참고 화면");
+        lines.push("");
+        lines.push(mdTable(["URL", "좋은 점"], data.design.refs));
+        lines.push("");
+        lines.push("### 6-3. 피하고 싶은 것");
+        lines.push("");
+        lines.push(data.design.avoid || "(미작성)");
+        lines.push("");
+        lines.push("### 6-4. 로고·이미지");
+        lines.push("");
+        data.design.logo.length
+          ? ["로고 파일 있음", "아직 없음 — 텍스트 로고로 임시", "사진/일러스트 제공 예정", "AI가 플레이스홀더만"].forEach((l) =>
+              lines.push(cb(null, l, data.design.logo))
+            )
+          : ["로고 파일 있음", "아직 없음 — 텍스트 로고로 임시", "사진/일러스트 제공 예정", "AI가 플레이스홀더만"].forEach((l) =>
+              lines.push(cb(null, l, data.design.logo))
+            );
+        lines.push("");
+        lines.push("### 6-5. 접근성·공공성");
+        lines.push("");
+        [
+          "일반 서비스 수준이면 됨",
+          "고령·장애인 배려가 중요",
+          "공공·관공서 느낌의 명확한 안내가 중요 (KRDS 등 참고 가능)",
+          "모름",
+        ].forEach((l) => lines.push(cb(null, l, data.design.a11y)));
+        lines.push("");
+
+        lines.push("## 7. 데이터·연동·운영");
+        lines.push("");
+        lines.push("### 7-1. 저장해야 하는 정보");
+        lines.push("");
+        lines.push(data.ops.store || "(미작성)");
+        lines.push("");
+        lines.push("### 7-2. 외부 연동");
+        lines.push("");
+        [
+          "문자/알림톡", "이메일", "결제(카드·간편결제)", "지도/주소 검색",
+          "캘린더", "엑셀 가져오기·내보내기", "기타", "없음 / 모름",
+        ].forEach((l) => {
+          if (l === "기타") {
+            const on = data.ops.integrations.includes("기타");
+            lines.push("- [" + (on ? "x" : " ") + "] 기타" + (on && data.ops.integrationsOther ? ": " + data.ops.integrationsOther : ""));
+          } else {
+            lines.push(cb(null, l, data.ops.integrations));
+          }
+        });
+        lines.push("");
+        lines.push("### 7-3. 배포·접속 주소");
+        lines.push("");
+        {
+          const d = data.ops.deploy;
+          lines.push(cb(null, "아직 없음 — 나중에", d));
+          lines.push("- [" + (d.includes("원하는 도메인") ? "x" : " ") + "] 원하는 도메인" + (data.ops.domain ? ": " + data.ops.domain : ""));
+          lines.push("- [" + (d.includes("사내 서버 / 특정 호스팅 지정") ? "x" : " ") + "] 사내 서버 / 특정 호스팅 지정" + (data.ops.host ? ": " + data.ops.host : ""));
+          lines.push(cb(null, "모름 — 추천 부탁", d));
+        }
+        lines.push("");
+        lines.push("### 7-4. 운영 중 절대 하면 안 되는 것");
+        lines.push("");
+        lines.push(data.ops.never || "(미작성)");
+        lines.push("");
+
+        lines.push("## 8. 하지 말 것 (Non-goals)");
+        lines.push("");
+        lines.push(mdTable(["이번에 하지 말 것", "이유"], data.nongoals));
+        lines.push("");
+
+        lines.push("## 9. 기술·개발 방식");
+        lines.push("");
+        lines.push("### 9-1. 기술 선호");
+        lines.push("");
+        ["없음 — PVC 기본 예시/추천을 따름", "있음 — 아래 적기"].forEach((l) =>
+          lines.push(cb(null, l, data.tech.prefer))
+        );
+        lines.push("");
+        lines.push("이미 정한 것: " + (data.tech.preferDetail || ""));
+        lines.push("");
+        lines.push("### 9-2. 기존 코드");
+        lines.push("");
+        lines.push(cb(null, "완전 신규", data.tech.existing));
+        lines.push("- [" + (data.tech.existing.includes("일부 있음") ? "x" : " ") + "] 일부 있음" + (data.tech.path ? " (경로/저장소: " + data.tech.path + ")" : ""));
+        lines.push("- [" + (data.tech.existing.includes("디자인만 있음") ? "x" : " ") + "] 디자인만 있음" + (data.tech.design ? " (Figma 등: " + data.tech.design + ")" : ""));
+        lines.push("");
+        lines.push("### 9-3. 품질 기대");
+        lines.push("");
+        [
+          "데모·설득용 (빠르면 됨, 나중에 정리)",
+          "실제 고객이 쓰는 MVP (안전·기본 품질 중요)",
+          "오래 운영할 제품 (문서·테스트·보안 더 엄격)",
+        ].forEach((l) => lines.push(cb(null, l, data.tech.quality)));
+        lines.push("");
+        lines.push("### 9-4. Agent에게 바라는 말투·보고");
+        lines.push("");
+        ["쉬운 한글 설명 위주", "변경 전에 항상 짧게 계획 보고", "작은 수정은 바로, 큰 것만 보고"].forEach((l) =>
+          lines.push(cb(null, l, data.tech.agent))
+        );
+        lines.push("- [" + (data.tech.agent.includes("기타") ? "x" : " ") + "] 기타" + (data.tech.agentOther ? ": " + data.tech.agentOther : ""));
+        lines.push("");
+
+        lines.push("## 10. 우선순위와 결정 규칙");
+        lines.push("");
+        lines.push("### 10-1. 기간 안에 하나만 고른다면");
+        lines.push("");
+        lines.push("1순위: " + (data.priority.r1 || ""));
+        lines.push("2순위: " + (data.priority.r2 || ""));
+        lines.push("3순위: " + (data.priority.r3 || ""));
+        lines.push("");
+        lines.push("### 10-2. 의견이 갈리면 누가 결정하나요?");
+        lines.push("");
+        lines.push(data.priority.decision || "(미작성)");
+        lines.push("");
+        lines.push("### 10-3. 매일/매주 확인하면 좋은 결과물");
+        lines.push("");
+        lines.push(data.priority.cadence || "(미작성)");
+        lines.push("");
+
+        lines.push("## 11. 자유 메모");
+        lines.push("");
+        lines.push(data.memo || "(미작성)");
+        lines.push("");
+
+        lines.push("## 12. 작성 체크리스트");
+        lines.push("");
+        [
+          "Quick 4문항 또는 Standard 해당 장을 채웠다",
+          "MVP와 “나중”을 섞지 않았다",
+          "로그인·개인정보 관련을 다루면 5장을 적었다",
+          "Non-goals 또는 Quick Q4를 적었다",
+          "모름인 항목에 “추천 부탁”을 명시했다",
+          "답변 파일을 저장했거나 Agent 채팅에 첨부했다",
+        ].forEach((l) => lines.push(cb(null, l, data.checklist)));
+        lines.push("");
+
+        if (data.mode === "high") {
+          lines.push("## High Risk 안내");
+          lines.push("");
+          lines.push("- Feature Brief (`docs/templates/FEATURE_BRIEF.md`) 작성을 권장합니다.");
+          lines.push("- 구현 전 승인 후 진행하세요.");
+          lines.push("");
+        }
+
+        lines.push("## Agent에게 전달용");
+        lines.push("");
+        lines.push("```text");
+        lines.push("이 답변 파일을 반영해 project-context.mdc와 CODEMAP 초안만 제안해 줘.");
+        lines.push("코드 구현은 내가 승인한 뒤에만 진행해.");
+        lines.push("```");
+        lines.push("");
+
+        return lines.join("\n");
+      }
+
+      function download(filename, text, mime) {
+        const blob = new Blob([text], { type: mime + ";charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function stamp() {
+        const d = new Date();
+        const p = (n) => String(n).padStart(2, "0");
+        return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + "-" + p(d.getHours()) + p(d.getMinutes());
+      }
+
+      function projectSlug(data) {
+        const raw = (data.meta && data.meta.name) || data.quick.q1 || "survey";
+        return String(raw)
+          .slice(0, 24)
+          .replace(/[^\w가-힣]+/g, "-")
+          .replace(/^-|-$/g, "") || "survey";
+      }
+
+      function serializeForm() {
+        const data = {};
+        const fd = new FormData(form);
+        for (const [k, v] of fd.entries()) {
+          if (data[k] !== undefined) {
+            if (!Array.isArray(data[k])) data[k] = [data[k]];
+            data[k].push(v);
+          } else {
+            data[k] = v;
+          }
+        }
+        // checkboxes not in FormData when unchecked — also capture checked-only lists via collect for mode
+        data.__mode = getMode();
+        // explicit checkbox groups
+        ["p12", "p22", "p23", "p33", "p51", "p52", "p61", "p64", "p65", "p72", "p73", "p91", "p92", "p93", "p94", "p12c"].forEach((name) => {
+          data[name] = checks(name);
+        });
+        data.meta_existing = val("meta_existing");
+        return data;
+      }
+
+      function restoreForm(data) {
+        if (!data || typeof data !== "object") return;
+        if (data.__mode) {
+          const radio = document.querySelector('input[name="mode"][value="' + data.__mode + '"]');
+          if (radio) radio.checked = true;
+        }
+        Object.keys(data).forEach((key) => {
+          if (key === "__mode") return;
+          const els = form.elements.namedItem(key);
+          if (!els) return;
+          const value = data[key];
+          if (els instanceof RadioNodeList || (els.length && els[0] && els[0].type === "checkbox")) {
+            const list = els instanceof RadioNodeList ? [...els] : [...els];
+            const values = Array.isArray(value) ? value : [value];
+            list.forEach((el) => {
+              if (el.type === "checkbox" || el.type === "radio") {
+                el.checked = values.includes(el.value);
+              }
+            });
+          } else if (els.type === "checkbox" || els.type === "radio") {
+            els.checked = !!value && (Array.isArray(value) ? value.includes(els.value) : value === els.value || value === true);
+          } else {
+            els.value = Array.isArray(value) ? value[0] : value ?? "";
+          }
+        });
+        applyMode();
+      }
+
+      let saveTimer;
+      function saveSoon() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm()));
+            statusEl.textContent = "이 브라우저에 임시 저장됨 · " + new Date().toLocaleTimeString("ko-KR");
+          } catch (e) {
+            statusEl.textContent = "자동 저장 실패 (용량/개인정보 모드 확인)";
+          }
+        }, 300);
+      }
+
+      function loadSaved() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          restoreForm(JSON.parse(raw));
+          statusEl.textContent = "이전 작성 내용을 불러왔습니다";
+        } catch (_) {
+          /* ignore */
+        }
+      }
+
+      document.querySelectorAll('input[name="mode"]').forEach((r) => {
+        r.addEventListener("change", applyMode);
+      });
+
+      form.addEventListener("input", saveSoon);
+      form.addEventListener("change", saveSoon);
+
+      document.getElementById("btn-md").addEventListener("click", () => {
+        const data = collect();
+        const md = buildMarkdown(data);
+        const name = "개발방향-설문-답변-" + projectSlug(data) + "-" + stamp() + ".md";
+        download(name, md, "text/markdown");
+        statusEl.textContent = "Markdown 파일을 내려받았습니다";
+      });
+
+      document.getElementById("btn-json").addEventListener("click", () => {
+        const data = collect();
+        const name = "개발방향-설문-답변-" + projectSlug(data) + "-" + stamp() + ".json";
+        download(name, JSON.stringify(data, null, 2), "application/json");
+        statusEl.textContent = "JSON 파일을 내려받았습니다";
+      });
+
+      document.getElementById("btn-clear").addEventListener("click", () => {
+        if (!confirm("작성 중인 내용을 모두 지울까요? (브라우저 임시 저장도 삭제됩니다)")) return;
+        form.reset();
+        localStorage.removeItem(STORAGE_KEY);
+        const today = document.querySelector('input[name="meta_date"]');
+        if (today) today.value = new Date().toISOString().slice(0, 10);
+        applyMode();
+        statusEl.textContent = "초기화되었습니다";
+      });
+
+      initTables();
+      const today = document.querySelector('input[name="meta_date"]');
+      if (today && !today.value) today.value = new Date().toISOString().slice(0, 10);
+      loadSaved();
+      applyMode();
+    })();
+  </script>
+</body>
+</html>

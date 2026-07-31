@@ -295,6 +295,7 @@ perfect-vibe-coding/          (또는 내 프로젝트)
 └── docs/
     ├── pvc/
     │   ├── 개발방향-설문.md  ← 기획 초안 (권장, 별도 사용 가능)
+    │   ├── 개발방향-설문-폼.html ← 브라우저 작성 → MD/JSON 내려받기
     │   ├── CHECKLISTS.md     ← 설치·시험·회고
     │   └── DECISIONS.md      ← 중요한 결정 기록
     ├── templates/            ← Brief / Blueprint 양식
@@ -549,6 +550,7 @@ A. PVC는 그래서 Always를 2개로 줄였습니다. 설문을 Always에 넣�
 |------|------|
 | [`LICENSE`](./LICENSE) | MIT — 사용·수정·재배포 |
 | [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md) | 기획 설문 (권장, 별도 사용 가능) |
+| [`docs/pvc/개발방향-설문-폼.html`](./docs/pvc/개발방향-설문-폼.html) | 설문 웹 폼 · Markdown/JSON 내려받기 |
 | [`RULES_MAP.md`](./RULES_MAP.md) | 규칙·스킬 지도·책임 경계 |
 | [`docs/pvc/CHECKLISTS.md`](./docs/pvc/CHECKLISTS.md) | 설치·스모크 7종·회고 |
 | [`docs/pvc/DECISIONS.md`](./docs/pvc/DECISIONS.md) | 운영 결정 기록 |
