@@ -109,7 +109,7 @@ PVC의 약속:
 ### 2-1. 체크리스트
 
 1. **설치 단위**를 고른다 → 처음이면 **권장 설치** ([3장](#3-설치-설명서)).  
-2. (강력 권장) [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md) 의 **Quick 4문항**만 채운다.  
+2. (강력 권장) [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md) 의 **Quick 4문항**만 채운다. ([라이브 폼](https://paakseongjin.github.io/perfect-vibe-coding/survey/))  
 3. `.cursor/rules/project/project-context.mdc` 에 제품·금지·검사 명령을 **짧게** 채운다. (템플릿 예시는 지우고 내 말로)  
 4. Cursor에서 **그 프로젝트 폴더**를 연다.  
 5. Agent 채팅에 아래를 붙여 넣는다.  
@@ -208,7 +208,7 @@ AI는 **추측**을 잘합니다. 추측이 쌓이면 나중에 고치기 어렵
 - **별도 파일** — 다운로드·복사해서 다른 프로젝트에 재사용해도 됩니다.  
 - 파일이 길어도, **Quick만** 쓰면 됩니다.
 
-파일: [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md)
+파일: [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md) · [라이브 폼에서 작성하기](https://paakseongjin.github.io/perfect-vibe-coding/survey/)
 
 ### 4-2. 등급 — 얼마나 채울까?
 
@@ -295,9 +295,11 @@ perfect-vibe-coding/          (또는 내 프로젝트)
 └── docs/
     ├── pvc/
     │   ├── 개발방향-설문.md  ← 기획 초안 (권장, 별도 사용 가능)
-    │   ├── 개발방향-설문-폼.html ← 브라우저 작성 → MD/JSON 내려받기
+    │   ├── 개발방향-설문-폼.html ← 라이브 폼으로 이동
     │   ├── CHECKLISTS.md     ← 설치·시험·회고
     │   └── DECISIONS.md      ← 중요한 결정 기록
+    ├── survey/               ← 설문 라이브 폼 (GitHub Pages)
+    │   └── index.html
     ├── templates/            ← Brief / Blueprint 양식
     ├── pvc-guide/ko/         ← 한글 상세 해설 (자동으로 AI에 안 붙음)
     └── references/           ← 외부 출처 카탈로그
@@ -550,7 +552,7 @@ A. PVC는 그래서 Always를 2개로 줄였습니다. 설문을 Always에 넣�
 |------|------|
 | [`LICENSE`](./LICENSE) | MIT — 사용·수정·재배포 |
 | [`docs/pvc/개발방향-설문.md`](./docs/pvc/개발방향-설문.md) | 기획 설문 (권장, 별도 사용 가능) |
-| [`docs/pvc/개발방향-설문-폼.html`](./docs/pvc/개발방향-설문-폼.html) | 설문 웹 폼 · Markdown/JSON 내려받기 |
+| [설문 라이브 폼](https://paakseongjin.github.io/perfect-vibe-coding/survey/) | 브라우저에서 작성 · Markdown/JSON 내려받기 |
 | [`RULES_MAP.md`](./RULES_MAP.md) | 규칙·스킬 지도·책임 경계 |
 | [`docs/pvc/CHECKLISTS.md`](./docs/pvc/CHECKLISTS.md) | 설치·스모크 7종·회고 |
 | [`docs/pvc/DECISIONS.md`](./docs/pvc/DECISIONS.md) | 운영 결정 기록 |
