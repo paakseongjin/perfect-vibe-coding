@@ -197,7 +197,7 @@
     }
     .inline-extra input[type="text"] { flex: 1; min-width: 12rem; }
 
-    .table-scroll { overflow-x: auto; margin-bottom: 0.75rem; }
+    .table-scroll { overflow-x: auto; margin-bottom: 0.45rem; }
     table.dyn {
       width: 100%;
       border-collapse: collapse;
@@ -221,6 +221,17 @@
       min-height: 0;
     }
     table.dyn textarea { min-height: 2.4rem; }
+    .table-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0 0 0.85rem;
+    }
+    .table-actions button {
+      font-weight: 500;
+      font-size: 0.82rem;
+      padding: 0.4rem 0.75rem;
+    }
 
     .numbered textarea { min-height: 2.6rem; margin-bottom: 0.45rem; }
 
@@ -747,35 +758,109 @@
         "tbl-nongoals": { cols: 2, names: ["ng_what", "ng_why"] },
       };
 
-      function initTables() {
+      function createTableRow(spec, index) {
+        const tr = document.createElement("tr");
+        for (let c = 0; c < spec.cols; c++) {
+          const td = document.createElement("td");
+          if (spec.numbered && c === 0) {
+            td.textContent = String(index + 1);
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = spec.names[c] + "_" + index;
+            hidden.value = String(index + 1);
+            td.appendChild(hidden);
+          } else {
+            const input = document.createElement(c > 0 || spec.cols > 2 ? "textarea" : "input");
+            if (input.tagName === "INPUT") input.type = "text";
+            input.name = spec.names[c] + "_" + index;
+            input.rows = 1;
+            td.appendChild(input);
+          }
+          tr.appendChild(td);
+        }
+        return tr;
+      }
+
+      function tableRowCount(table) {
+        return table.querySelectorAll("tbody tr").length;
+      }
+
+      function addTableRow(tableId, focus, skipSave) {
+        const table = document.getElementById(tableId);
+        const spec = TABLE_SPECS[tableId];
+        if (!table || !spec) return;
+        const index = tableRowCount(table);
+        const tr = createTableRow(spec, index);
+        table.querySelector("tbody").appendChild(tr);
+        updateRemoveButton(tableId);
+        if (focus) {
+          const field = tr.querySelector("textarea, input:not([type='hidden'])");
+          if (field) field.focus();
+        }
+        if (!skipSave) saveSoon();
+      }
+
+      function removeLastTableRow(tableId) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+        const min = Number(table.dataset.rows || 1);
+        const rows = table.querySelectorAll("tbody tr");
+        if (rows.length <= min) return;
+        rows[rows.length - 1].remove();
+        updateRemoveButton(tableId);
+        saveSoon();
+      }
+
+      function updateRemoveButton(tableId) {
+        const table = document.getElementById(tableId);
+        const btn = document.querySelector('[data-remove-row="' + tableId + '"]');
+        if (!table || !btn) return;
+        const min = Number(table.dataset.rows || 1);
+        btn.disabled = tableRowCount(table) <= min;
+      }
+
+      function mountTableControls(tableId) {
+        const table = document.getElementById(tableId);
+        if (!table || table.dataset.controls === "1") return;
+        table.dataset.controls = "1";
+        const wrap = document.createElement("div");
+        wrap.className = "table-actions";
+        wrap.innerHTML =
+          '<button type="button" class="secondary" data-add-row="' + tableId + '">+ 항목 추가</button>' +
+          '<button type="button" class="ghost" data-remove-row="' + tableId + '">마지막 행 삭제</button>';
+        const host = table.closest(".table-scroll") || table;
+        host.after(wrap);
+        wrap.querySelector("[data-add-row]").addEventListener("click", () => addTableRow(tableId, true));
+        wrap.querySelector("[data-remove-row]").addEventListener("click", () => removeLastTableRow(tableId));
+        updateRemoveButton(tableId);
+      }
+
+      function initTables(resetToDefault) {
         Object.entries(TABLE_SPECS).forEach(([id, spec]) => {
           const table = document.getElementById(id);
           if (!table) return;
           const tbody = table.querySelector("tbody");
-          const rows = Number(table.dataset.rows || 2);
-          tbody.innerHTML = "";
-          for (let r = 0; r < rows; r++) {
-            const tr = document.createElement("tr");
-            for (let c = 0; c < spec.cols; c++) {
-              const td = document.createElement("td");
-              if (spec.numbered && c === 0) {
-                td.textContent = String(r + 1);
-                const hidden = document.createElement("input");
-                hidden.type = "hidden";
-                hidden.name = spec.names[c] + "_" + r;
-                hidden.value = String(r + 1);
-                td.appendChild(hidden);
-              } else {
-                const input = document.createElement(c > 0 || spec.cols > 2 ? "textarea" : "input");
-                if (input.tagName === "INPUT") input.type = "text";
-                input.name = spec.names[c] + "_" + r;
-                input.rows = 1;
-                td.appendChild(input);
-              }
-              tr.appendChild(td);
-            }
-            tbody.appendChild(tr);
+          const target = Number(table.dataset.rows || 2);
+          if (resetToDefault || !tbody.children.length) {
+            tbody.innerHTML = "";
+            for (let r = 0; r < target; r++) tbody.appendChild(createTableRow(spec, r));
           }
+          mountTableControls(id);
+          updateRemoveButton(id);
+        });
+      }
+
+      function ensureRowsForSavedData(data) {
+        Object.entries(TABLE_SPECS).forEach(([id, spec]) => {
+          const table = document.getElementById(id);
+          if (!table) return;
+          let max = Number(table.dataset.rows || 2) - 1;
+          Object.keys(data).forEach((key) => {
+            if (!key.startsWith(spec.names[0] + "_")) return;
+            const m = key.match(/_(\d+)$/);
+            if (m) max = Math.max(max, Number(m[1]));
+          });
+          while (tableRowCount(table) <= max) addTableRow(id, false, true);
         });
       }
 
@@ -825,9 +910,14 @@
         return line;
       }
 
-      function tableRows(names, count) {
+      function tableRows(names) {
+        let max = -1;
+        form.querySelectorAll('[name^="' + names[0] + '_"]').forEach((el) => {
+          const m = String(el.name).match(/_(\d+)$/);
+          if (m) max = Math.max(max, Number(m[1]));
+        });
         const rows = [];
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i <= max; i++) {
           const cells = names.map((n) => val(n + "_" + i));
           if (cells.some((c) => c)) rows.push(cells);
         }
@@ -871,11 +961,11 @@
             oneLiner: val("p11"),
             forms: checks("p12"),
             formsOther: val("p12_other"),
-            refs: tableRows(["ref_name", "ref_like", "ref_unlike"], 2),
+            refs: tableRows(["ref_name", "ref_like", "ref_unlike"]),
             success: val("p14"),
           },
           users: {
-            roles: tableRows(["u_role", "u_age", "u_device", "u_action"], 3),
+            roles: tableRows(["u_role", "u_age", "u_device", "u_action"]),
             env: checks("p22"),
             envOther: val("p22_other"),
             lang: checks("p23"),
@@ -883,13 +973,13 @@
             terms: val("p23_terms"),
           },
           mvp: {
-            features: tableRows(["mvp_n", "mvp_name", "mvp_who", "mvp_result"], 5),
+            features: tableRows(["mvp_n", "mvp_name", "mvp_who", "mvp_result"]),
             journey: [1, 2, 3, 4, 5].map((n) => val("p32_" + n)),
             screens: checks("p33"),
             screensOther: val("p33_other"),
             scenarios: [1, 2, 3].map((n) => val("p34_" + n)),
           },
-          later: tableRows(["later_what", "later_why"], 3),
+          later: tableRows(["later_what", "later_why"]),
           security: {
             login: checks("p51"),
             social: val("p51_social"),
@@ -900,7 +990,7 @@
           design: {
             feel: checks("p61"),
             brand: val("p61_brand"),
-            refs: tableRows(["des_url", "des_good"], 2),
+            refs: tableRows(["des_url", "des_good"]),
             avoid: val("p63"),
             logo: checks("p64"),
             a11y: checks("p65"),
@@ -914,7 +1004,7 @@
             host: val("p73_host"),
             never: val("p74"),
           },
-          nongoals: tableRows(["ng_what", "ng_why"], 3),
+          nongoals: tableRows(["ng_what", "ng_why"]),
           tech: {
             prefer: checks("p91"),
             preferDetail: val("p91_detail"),
@@ -1316,6 +1406,7 @@
           const radio = document.querySelector('input[name="mode"][value="' + data.__mode + '"]');
           if (radio) radio.checked = true;
         }
+        ensureRowsForSavedData(data);
         Object.keys(data).forEach((key) => {
           if (key === "__mode") return;
           const els = form.elements.namedItem(key);
@@ -1386,15 +1477,16 @@
 
       document.getElementById("btn-clear").addEventListener("click", () => {
         if (!confirm("작성 중인 내용을 모두 지울까요? (브라우저 임시 저장도 삭제됩니다)")) return;
-        form.reset();
         localStorage.removeItem(STORAGE_KEY);
+        form.reset();
+        initTables(true);
         const today = document.querySelector('input[name="meta_date"]');
         if (today) today.value = new Date().toISOString().slice(0, 10);
         applyMode();
         statusEl.textContent = "초기화되었습니다";
       });
 
-      initTables();
+      initTables(true);
       const today = document.querySelector('input[name="meta_date"]');
       if (today && !today.value) today.value = new Date().toISOString().slice(0, 10);
       loadSaved();
